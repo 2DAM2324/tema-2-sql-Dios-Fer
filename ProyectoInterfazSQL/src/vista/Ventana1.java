@@ -1604,7 +1604,12 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_detalles_JugadorActionPerformed
 
     private void jButton_detalles_ServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_ServidorActionPerformed
-        // TODO add your handling code here:
+        //Cargamos los datos del seleccionado para la vista
+        if (jTable_server.getSelectedRow() != -1) {
+            limpiar_vista_Servidor();
+            jTextField_region.setText(servidores_vista.get(jTable_server.getSelectedRow()).getRegion());
+           
+        }
     }//GEN-LAST:event_jButton_detalles_ServidorActionPerformed
 
 
