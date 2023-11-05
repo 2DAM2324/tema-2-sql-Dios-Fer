@@ -117,6 +117,13 @@ public class Ventana1 extends javax.swing.JFrame {
         jButton_borrar_partida = new javax.swing.JButton();
         jLabel_JugadoresPartida = new javax.swing.JLabel();
         jTextField_JugadoresPartida = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable_serverPartida = new javax.swing.JTable();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTable_jugadorPartida = new javax.swing.JTable();
+        jLabel_ServidorPartida = new javax.swing.JLabel();
+        jLabel_JugadoresPartida1 = new javax.swing.JLabel();
+        jButton_detalles_Partida = new javax.swing.JButton();
         jPanel_server = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable_server = new javax.swing.JTable();
@@ -127,6 +134,7 @@ public class Ventana1 extends javax.swing.JFrame {
         jButton_borrar_server = new javax.swing.JButton();
         jButton_modificar_server = new javax.swing.JButton();
         jButton_aniadir_server = new javax.swing.JButton();
+        jButton_detalles_Servidor = new javax.swing.JButton();
         jPanel_ciudad = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_jugador = new javax.swing.JTable();
@@ -141,6 +149,10 @@ public class Ventana1 extends javax.swing.JFrame {
         jButton_cancelar_jugador = new javax.swing.JButton();
         jTextField_Nivel = new javax.swing.JTextField();
         jLabel_Inventarios = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable_InventariosJugador = new javax.swing.JTable();
+        jLabel_InventariosJugador = new javax.swing.JLabel();
+        jButton_detalles_Jugador = new javax.swing.JButton();
         jPanel_persona = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable_Inventario = new javax.swing.JTable();
@@ -155,6 +167,10 @@ public class Ventana1 extends javax.swing.JFrame {
         jButton_aniadir_iventario = new javax.swing.JButton();
         jTextField_JugadoresConAcceso = new javax.swing.JTextField();
         jLabel_JugadoresConAcceso = new javax.swing.JLabel();
+        jLabel_InventariosJugador1 = new javax.swing.JLabel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTable_jugadoresInventario = new javax.swing.JTable();
+        jButton_detalles_Inventario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -244,6 +260,86 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel_JugadoresPartida.setText("Jugadores:");
 
+        jTable_serverPartida.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IdServer", "Region"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_serverPartida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_serverPartidaMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(jTable_serverPartida);
+        if (jTable_serverPartida.getColumnModel().getColumnCount() > 0) {
+            jTable_serverPartida.getColumnModel().getColumn(0).setResizable(false);
+            jTable_serverPartida.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        jTable_jugadorPartida.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IdPlayer", "Nivel", "NickName"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_jugadorPartida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_jugadorPartidaMouseClicked(evt);
+            }
+        });
+        jScrollPane7.setViewportView(jTable_jugadorPartida);
+        if (jTable_jugadorPartida.getColumnModel().getColumnCount() > 0) {
+            jTable_jugadorPartida.getColumnModel().getColumn(0).setResizable(false);
+            jTable_jugadorPartida.getColumnModel().getColumn(1).setResizable(false);
+            jTable_jugadorPartida.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jLabel_ServidorPartida.setText("Servidor:");
+
+        jLabel_JugadoresPartida1.setText("Jugadores:");
+
+        jButton_detalles_Partida.setText("Detalles");
+        jButton_detalles_Partida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_detalles_PartidaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel_bibliotecaLayout = new javax.swing.GroupLayout(jPanel_biblioteca);
         jPanel_biblioteca.setLayout(jPanel_bibliotecaLayout);
         jPanel_bibliotecaLayout.setHorizontalGroup(
@@ -272,7 +368,20 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addGap(38, 38, 38)
                         .addGroup(jPanel_bibliotecaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton_guardar_partida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_cancelar_partida, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))))
+                            .addComponent(jButton_cancelar_partida, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                            .addComponent(jButton_detalles_Partida, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)))
+                    .addGroup(jPanel_bibliotecaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel_bibliotecaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel_JugadoresPartida1))
+                    .addGroup(jPanel_bibliotecaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel_ServidorPartida))
+                    .addGroup(jPanel_bibliotecaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel_bibliotecaLayout.setVerticalGroup(
@@ -304,8 +413,17 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel_bibliotecaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_JugadoresPartida)
-                    .addComponent(jTextField_JugadoresPartida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(151, Short.MAX_VALUE))
+                    .addComponent(jTextField_JugadoresPartida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_detalles_Partida))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel_ServidorPartida)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel_JugadoresPartida1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("Partida", jPanel_biblioteca);
@@ -387,6 +505,13 @@ public class Ventana1 extends javax.swing.JFrame {
             }
         });
 
+        jButton_detalles_Servidor.setText("Detalles");
+        jButton_detalles_Servidor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_detalles_ServidorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel_serverLayout = new javax.swing.GroupLayout(jPanel_server);
         jPanel_server.setLayout(jPanel_serverLayout);
         jPanel_serverLayout.setHorizontalGroup(
@@ -409,7 +534,8 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addGap(38, 38, 38)
                         .addGroup(jPanel_serverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton_guardar_server, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_cancelar_server, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))))
+                            .addComponent(jButton_cancelar_server, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                            .addComponent(jButton_detalles_Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel_serverLayout.setVerticalGroup(
@@ -435,7 +561,9 @@ public class Ventana1 extends javax.swing.JFrame {
                     .addComponent(jButton_guardar_server, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton_cancelar_server)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton_detalles_Servidor)
+                .addContainerGap(234, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("Servidor", jPanel_server);
@@ -539,6 +667,43 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel_Inventarios.setText("Inventarios:");
 
+        jTable_InventariosJugador.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IdInventario", "SlotsMaximos", "SlotsOcupados"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_InventariosJugador.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_InventariosJugadorMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTable_InventariosJugador);
+        if (jTable_InventariosJugador.getColumnModel().getColumnCount() > 0) {
+            jTable_InventariosJugador.getColumnModel().getColumn(0).setResizable(false);
+            jTable_InventariosJugador.getColumnModel().getColumn(1).setResizable(false);
+            jTable_InventariosJugador.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jLabel_InventariosJugador.setText("Inventarios:");
+
+        jButton_detalles_Jugador.setText("Detalles");
+        jButton_detalles_Jugador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_detalles_JugadorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel_ciudadLayout = new javax.swing.GroupLayout(jPanel_ciudad);
         jPanel_ciudad.setLayout(jPanel_ciudadLayout);
         jPanel_ciudadLayout.setHorizontalGroup(
@@ -559,7 +724,8 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addGap(38, 38, 38)
                         .addGroup(jPanel_ciudadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton_guardar_jugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_cancelar_jugador, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)))
+                            .addComponent(jButton_cancelar_jugador, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                            .addComponent(jButton_detalles_Jugador, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)))
                     .addGroup(jPanel_ciudadLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -567,7 +733,13 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addGroup(jPanel_ciudadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton_modificar_jugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton_aniadir_jugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_borrar_jugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButton_borrar_jugador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel_ciudadLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel_ciudadLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel_InventariosJugador)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel_ciudadLayout.setVerticalGroup(
@@ -597,8 +769,13 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel_ciudadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField_InventariosJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel_Inventarios))
-                .addContainerGap(150, Short.MAX_VALUE))
+                    .addComponent(jLabel_Inventarios)
+                    .addComponent(jButton_detalles_Jugador))
+                .addGap(38, 38, 38)
+                .addComponent(jLabel_InventariosJugador)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("Jugador", jPanel_ciudad);
@@ -678,6 +855,50 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel_JugadoresConAcceso.setText("Jugadores:");
 
+        jLabel_InventariosJugador1.setText("Jugadores:");
+
+        jTable_jugadoresInventario.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IdPlayer", "Nivel", "NickName"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_jugadoresInventario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_jugadoresInventarioMouseClicked(evt);
+            }
+        });
+        jScrollPane9.setViewportView(jTable_jugadoresInventario);
+        if (jTable_jugadoresInventario.getColumnModel().getColumnCount() > 0) {
+            jTable_jugadoresInventario.getColumnModel().getColumn(0).setResizable(false);
+            jTable_jugadoresInventario.getColumnModel().getColumn(1).setResizable(false);
+            jTable_jugadoresInventario.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jButton_detalles_Inventario.setText("Detalles");
+        jButton_detalles_Inventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_detalles_InventarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel_personaLayout = new javax.swing.GroupLayout(jPanel_persona);
         jPanel_persona.setLayout(jPanel_personaLayout);
         jPanel_personaLayout.setHorizontalGroup(
@@ -706,7 +927,14 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addGap(38, 38, 38)
                         .addGroup(jPanel_personaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton_guardar_inventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_cancelar_inventario, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))))
+                            .addComponent(jButton_cancelar_inventario, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                            .addComponent(jButton_detalles_Inventario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)))
+                    .addGroup(jPanel_personaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel_InventariosJugador1))
+                    .addGroup(jPanel_personaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel_personaLayout.setVerticalGroup(
@@ -736,8 +964,13 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel_personaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField_JugadoresConAcceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel_JugadoresConAcceso))
-                .addContainerGap(150, Short.MAX_VALUE))
+                    .addComponent(jLabel_JugadoresConAcceso)
+                    .addComponent(jButton_detalles_Inventario))
+                .addGap(54, 54, 54)
+                .addComponent(jLabel_InventariosJugador1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("InventarioCompartido", jPanel_persona);
@@ -1342,6 +1575,38 @@ public class Ventana1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_guardar_jugadorActionPerformed
 
+    private void jTable_serverPartidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_serverPartidaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable_serverPartidaMouseClicked
+
+    private void jTable_jugadorPartidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_jugadorPartidaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable_jugadorPartidaMouseClicked
+
+    private void jTable_InventariosJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_InventariosJugadorMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable_InventariosJugadorMouseClicked
+
+    private void jTable_jugadoresInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_jugadoresInventarioMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable_jugadoresInventarioMouseClicked
+
+    private void jButton_detalles_PartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_PartidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_detalles_PartidaActionPerformed
+
+    private void jButton_detalles_InventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_InventarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_detalles_InventarioActionPerformed
+
+    private void jButton_detalles_JugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_JugadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_detalles_JugadorActionPerformed
+
+    private void jButton_detalles_ServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_ServidorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_detalles_ServidorActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton jButton_aniadir_iventario;
@@ -1356,6 +1621,10 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JButton jButton_cancelar_jugador;
     private javax.swing.JButton jButton_cancelar_partida;
     public javax.swing.JButton jButton_cancelar_server;
+    private javax.swing.JButton jButton_detalles_Inventario;
+    private javax.swing.JButton jButton_detalles_Jugador;
+    private javax.swing.JButton jButton_detalles_Partida;
+    private javax.swing.JButton jButton_detalles_Servidor;
     private javax.swing.JButton jButton_guardar_inventario;
     private javax.swing.JButton jButton_guardar_jugador;
     private javax.swing.JButton jButton_guardar_partida;
@@ -1365,10 +1634,14 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JButton jButton_modificar_partida;
     private javax.swing.JButton jButton_modificar_server;
     private javax.swing.JLabel jLabel_Inventarios;
+    private javax.swing.JLabel jLabel_InventariosJugador;
+    private javax.swing.JLabel jLabel_InventariosJugador1;
     private javax.swing.JLabel jLabel_JugadoresConAcceso;
     private javax.swing.JLabel jLabel_JugadoresPartida;
+    private javax.swing.JLabel jLabel_JugadoresPartida1;
     private javax.swing.JLabel jLabel_NickName;
     private javax.swing.JLabel jLabel_Servidor;
+    private javax.swing.JLabel jLabel_ServidorPartida;
     private javax.swing.JLabel jLabel_SlotsOcupados;
     private javax.swing.JLabel jLabel_nivel;
     private javax.swing.JLabel jLabel_nombre_SlotsMaximos;
@@ -1382,11 +1655,19 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane;
     public javax.swing.JTable jTable_Inventario;
+    public javax.swing.JTable jTable_InventariosJugador;
     private javax.swing.JTable jTable_Partida;
     private javax.swing.JTable jTable_jugador;
+    private javax.swing.JTable jTable_jugadorPartida;
+    private javax.swing.JTable jTable_jugadoresInventario;
     private javax.swing.JTable jTable_server;
+    private javax.swing.JTable jTable_serverPartida;
     public javax.swing.JTextField jTextField_IdServer_Partida;
     public javax.swing.JTextField jTextField_InventariosJugador;
     private javax.swing.JTextField jTextField_JugadoresConAcceso;
