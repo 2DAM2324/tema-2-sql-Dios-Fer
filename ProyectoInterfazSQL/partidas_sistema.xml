@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xml>
+  <Partidas>
+    <Partida>
+      <IdPartida>P-1</IdPartida>
+      <NumEspectadores>100</NumEspectadores>
+      <IdServidorPartida>S-2</IdServidorPartida>
+      <Jugadores/>
+    </Partida>
+    <Partida>
+      <IdPartida>P-2</IdPartida>
+      <NumEspectadores>5</NumEspectadores>
+      <IdServidorPartida>S-3</IdServidorPartida>
+      <Jugadores>
+        <IdJugador>J-3</IdJugador>
+        <IdJugador>J-2</IdJugador>
+        <IdJugador>J-1</IdJugador>
+      </Jugadores>
+    </Partida>
+    <Partida>
+      <IdPartida>P-3</IdPartida>
+      <NumEspectadores>1</NumEspectadores>
+      <IdServidorPartida>S-1</IdServidorPartida>
+      <Jugadores>
+        <IdJugador>J-4</IdJugador>
+      </Jugadores>
+    </Partida>
+  </Partidas>
+</xml>

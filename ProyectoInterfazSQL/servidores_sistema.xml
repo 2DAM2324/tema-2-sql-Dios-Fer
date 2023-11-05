@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xml>
+  <Servidores>
+    <Servidor>
+      <IdServidor>S-1</IdServidor>
+      <Region>Espana</Region>
+    </Servidor>
+    <Servidor>
+      <IdServidor>S-2</IdServidor>
+      <Region>Espana</Region>
+    </Servidor>
+    <Servidor>
+      <IdServidor>S-3</IdServidor>
+      <Region>Europa</Region>
+    </Servidor>
+    <Servidor>
+      <IdServidor>S-4</IdServidor>
+      <Region>Asia</Region>
+    </Servidor>
+    <Servidor>
+      <IdServidor>S-5</IdServidor>
+      <Region>Europa</Region>
+    </Servidor>
+  </Servidores>
+</xml>
