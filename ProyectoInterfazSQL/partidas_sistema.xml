@@ -19,7 +19,7 @@
     </Partida>
     <Partida>
       <IdPartida>P-3</IdPartida>
-      <NumEspectadores>1</NumEspectadores>
+      <NumEspectadores>10</NumEspectadores>
       <IdServidorPartida>S-1</IdServidorPartida>
       <Jugadores>
         <IdJugador>J-4</IdJugador>

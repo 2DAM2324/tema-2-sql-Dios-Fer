@@ -24,7 +24,7 @@
     <Jugador>
       <IdJugador>J-3</IdJugador>
       <NickName>Juan</NickName>
-      <Nivel>999</Nivel>
+      <Nivel>99</Nivel>
       <Inventarios>
         <IdInventario>I-1</IdInventario>
       </Inventarios>
@@ -35,12 +35,12 @@
       <Nivel>19</Nivel>
       <Inventarios>
         <IdInventario>I-2</IdInventario>
-        <IdInventario>I-1</IdInventario>
+        <IdInventario>I-3</IdInventario>
       </Inventarios>
     </Jugador>
     <Jugador>
       <IdJugador>J-5</IdJugador>
-      <NickName>Fernando</NickName>
+      <NickName>Fernandoo</NickName>
       <Nivel>10</Nivel>
       <Inventarios>
         <IdInventario>I-2</IdInventario>

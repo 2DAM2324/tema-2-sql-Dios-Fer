@@ -7,7 +7,6 @@
       <SlotsOcupados>5</SlotsOcupados>
       <Jugadores>
         <IdJugador>J-2</IdJugador>
-        <IdJugador>J-4</IdJugador>
         <IdJugador>J-3</IdJugador>
       </Jugadores>
     </Inventario>
@@ -17,8 +16,8 @@
       <SlotsOcupados>10</SlotsOcupados>
       <Jugadores>
         <IdJugador>J-2</IdJugador>
-        <IdJugador>J-4</IdJugador>
         <IdJugador>J-5</IdJugador>
+        <IdJugador>J-4</IdJugador>
       </Jugadores>
     </Inventario>
     <Inventario>
@@ -29,6 +28,7 @@
         <IdJugador>J-1</IdJugador>
         <IdJugador>J-2</IdJugador>
         <IdJugador>J-5</IdJugador>
+        <IdJugador>J-4</IdJugador>
       </Jugadores>
     </Inventario>
     <Inventario>

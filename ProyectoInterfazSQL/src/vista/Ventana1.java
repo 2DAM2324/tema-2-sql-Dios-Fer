@@ -92,6 +92,7 @@ public class Ventana1 extends javax.swing.JFrame {
         
         table_model_partida_jugadores = (DefaultTableModel) jTable_jugadorPartida.getModel();
         table_model_partida_servidor = (DefaultTableModel) jTable_serverPartida.getModel();
+        table_model_inventarios_en_jugador = (DefaultTableModel) jTable_InventariosJugador.getModel();
 
         actualizar_vista_server();
         actualizar_vista_inventario();
@@ -1101,7 +1102,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void jButton_guardar_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardar_inventarioActionPerformed
         //Filtros 
-        if((!jTextField_SlotsMaximos.getText().toString().trim().equals("") && !jTextField_SlotsOcupados.getText().toString().trim().equals(""))&& (IdInventarioSeleccionado!="")){
+        if((!jTextField_SlotsMaximos.getText().toString().trim().equals("") && !jTextField_SlotsOcupados.getText().toString().trim().equals(""))&& (!IdInventarioSeleccionado.equals(""))){
 
             if (esEntero(jTextField_SlotsMaximos.getText().toString()) && esEntero(jTextField_SlotsOcupados.getText().toString())){
                 
@@ -1347,7 +1348,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void jButton_guardar_partidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardar_partidaActionPerformed
         //Filtros
-        if(!jTextField_IdServer_Partida.getText().toString().trim().equals("") && !jTextField_NumEspectadores.getText().toString().trim().equals("")){
+        if((!jTextField_IdServer_Partida.getText().toString().trim().equals("") && !jTextField_NumEspectadores.getText().toString().trim().equals(""))&& (!IdPartidaSeleccionado.equals(""))){
             if (esEntero(jTextField_NumEspectadores.getText().toString())){
 
                 if (((Integer.parseInt(jTextField_NumEspectadores.getText().toString()))>=0)){
@@ -1475,6 +1476,10 @@ public class Ventana1 extends javax.swing.JFrame {
             String ids="";
             for (int i=0; i<jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarios().size(); i++){
                 ids += (jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarioConAcceso(i).getIdInventario());
+                
+                //Actualizamos la tabla de los detalles
+                table_model_inventarios_en_jugador.addRow(new Object[]{(jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarioConAcceso(i).getIdInventario()), (jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarioConAcceso(i).getSlotsMaximos()), (jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarioConAcceso(i).getSlotsOcupados())});
+                
                 if (i != jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarios().size()-1){
                     ids+= ", ";
                 }
@@ -1540,7 +1545,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void jButton_guardar_jugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardar_jugadorActionPerformed
         //Filtros
-        if(!jTextField_NickName.getText().toString().trim().equals("") && !jTextField_Nivel.getText().toString().trim().equals("")){
+        if((!jTextField_NickName.getText().toString().trim().equals("") && !jTextField_Nivel.getText().toString().trim().equals(""))&& (!IdJugadorSeleccionado.equals(""))){
 
             if (esEntero(jTextField_Nivel.getText().toString())){
                                 
@@ -1608,7 +1613,6 @@ public class Ventana1 extends javax.swing.JFrame {
         if (jTable_Partida.getSelectedRow() != -1) {
             limpiar_vista_Partida();
             
-            IdPartidaSeleccionado = partidas_vista.get(jTable_Partida.getSelectedRow()).getIdPartida();
             antiguaIdServerPartida = partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getIdServer();
             jTextField_NumEspectadores.setText(String.valueOf(partidas_vista.get(jTable_Partida.getSelectedRow()).getNumEspectadores()));
             jTextField_IdServer_Partida.setText(partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getIdServer());
@@ -1638,7 +1642,24 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_detalles_InventarioActionPerformed
 
     private void jButton_detalles_JugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_JugadorActionPerformed
-        // TODO add your handling code here:
+        //Mostramos los detalles
+        if (jTable_jugador.getSelectedRow() != -1) {
+            limpiar_vista_Jugador();
+            jTextField_NickName.setText(jugadores_vista.get(jTable_jugador.getSelectedRow()).getNickName());
+            jTextField_Nivel.setText (String.valueOf(jugadores_vista.get(jTable_jugador.getSelectedRow()).getNivel()));        
+            String ids="";
+            for (int i=0; i<jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarios().size(); i++){
+                ids += (jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarioConAcceso(i).getIdInventario());
+                
+                //Actualizamos la tabla de los detalles
+                table_model_inventarios_en_jugador.addRow(new Object[]{(jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarioConAcceso(i).getIdInventario()), (jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarioConAcceso(i).getSlotsMaximos()), (jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarioConAcceso(i).getSlotsOcupados())});
+                
+                if (i != jugadores_vista.get(jTable_jugador.getSelectedRow()).getInventarios().size()-1){
+                    ids+= ", ";
+                }
+            }
+            jTextField_InventariosJugador.setText(ids);
+        }
     }//GEN-LAST:event_jButton_detalles_JugadorActionPerformed
 
     private void jButton_detalles_ServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_ServidorActionPerformed
@@ -1845,6 +1866,11 @@ public class Ventana1 extends javax.swing.JFrame {
         jTextField_NickName.setText("");
         jTextField_Nivel.setText("");
         jTextField_InventariosJugador.setText("");
+        
+        for (int i=table_model_inventarios_en_jugador.getRowCount()-1; i>=0; i--){
+            table_model_inventarios_en_jugador.removeRow(i);
+        }
+        
     }
     
     /**
@@ -1885,7 +1911,10 @@ public class Ventana1 extends javax.swing.JFrame {
     
     
     private DefaultTableModel table_model_partida_jugadores;
-    private DefaultTableModel table_model_partida_servidor;
+    private DefaultTableModel table_model_partida_servidor;    
+    
+    private DefaultTableModel table_model_inventarios_en_jugador;
+
 
     
 }
