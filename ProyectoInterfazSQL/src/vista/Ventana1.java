@@ -89,6 +89,9 @@ public class Ventana1 extends javax.swing.JFrame {
         table_model_inventario = (DefaultTableModel) jTable_Inventario.getModel();
         table_model_jugador = (DefaultTableModel) jTable_jugador.getModel();
         table_model_partida = (DefaultTableModel) jTable_Partida.getModel();
+        
+        table_model_partida_jugadores = (DefaultTableModel) jTable_jugadorPartida.getModel();
+        table_model_partida_servidor = (DefaultTableModel) jTable_serverPartida.getModel();
 
         actualizar_vista_server();
         actualizar_vista_inventario();
@@ -1250,9 +1253,18 @@ public class Ventana1 extends javax.swing.JFrame {
             antiguaIdServerPartida = partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getIdServer();
             jTextField_NumEspectadores.setText(String.valueOf(partidas_vista.get(jTable_Partida.getSelectedRow()).getNumEspectadores()));
             jTextField_IdServer_Partida.setText(partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getIdServer());
+            
+            //Ponemos el servidor en la tabla de los detalles
+            table_model_partida_servidor.addRow(new Object[]{(partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getIdServer()), (partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getRegion())});
+            
             String ids="";
             for (int i=0; i<partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadores().size(); i++){
                 ids += (partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadorpos(i).getIdPlayer());
+                
+                //Actualizamos la tabla de los detalles
+                table_model_partida_jugadores.addRow(new Object[]{(partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadorpos(i).getIdPlayer()), (partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadorpos(i).getNivel()), (partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadorpos(i).getNickName())});
+                
+                
                 if (i != partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadores().size()-1){
                     ids+= ", ";
                 }
@@ -1592,7 +1604,33 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable_jugadoresInventarioMouseClicked
 
     private void jButton_detalles_PartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_PartidaActionPerformed
-        // TODO add your handling code here:
+        //Seleccionamos y cargamos los datos del seleccionado para la modificacion
+        if (jTable_Partida.getSelectedRow() != -1) {
+            limpiar_vista_Partida();
+            
+            IdPartidaSeleccionado = partidas_vista.get(jTable_Partida.getSelectedRow()).getIdPartida();
+            antiguaIdServerPartida = partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getIdServer();
+            jTextField_NumEspectadores.setText(String.valueOf(partidas_vista.get(jTable_Partida.getSelectedRow()).getNumEspectadores()));
+            jTextField_IdServer_Partida.setText(partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getIdServer());
+            
+            //Ponemos el servidor en la tabla de los detalles
+            table_model_partida_servidor.addRow(new Object[]{(partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getIdServer()), (partidas_vista.get(jTable_Partida.getSelectedRow()).getServerPartida().getRegion())});
+
+            String ids="";
+
+            for (int i=0; i<partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadores().size(); i++){
+                ids += (partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadorpos(i).getIdPlayer());
+                
+                //Actualizamos la tabla de los detalles
+                table_model_partida_jugadores.addRow(new Object[]{(partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadorpos(i).getIdPlayer()), (partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadorpos(i).getNivel()), (partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadorpos(i).getNickName())});
+                
+                if (i != partidas_vista.get(jTable_Partida.getSelectedRow()).getJugadores().size()-1){
+                    ids+= ", ";
+                }
+            }
+            jTextField_JugadoresPartida.setText(ids);
+            idsJugadores_Partida=jTextField_JugadoresPartida.getText().toString().split(", ");
+       }
     }//GEN-LAST:event_jButton_detalles_PartidaActionPerformed
 
     private void jButton_detalles_InventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_InventarioActionPerformed
@@ -1736,6 +1774,8 @@ public class Ventana1 extends javax.swing.JFrame {
 
     }
     
+
+    
     /**
      * @brief Actualizar la vista de la tabla partida en funcion del vector de la vista
      */
@@ -1750,6 +1790,8 @@ public class Ventana1 extends javax.swing.JFrame {
             }
 
     }
+    
+    
     
     /**
      * @brief 
@@ -1776,6 +1818,15 @@ public class Ventana1 extends javax.swing.JFrame {
         jTextField_JugadoresPartida.setText("");
         IdPartidaSeleccionado="";
         antiguaIdServerPartida="";
+        //Limpiamos la tabla de jugadores
+        for (int num=table_model_partida_jugadores.getRowCount()-1; num>=0; num--){
+            table_model_partida_jugadores.removeRow(num);
+        }
+
+        //Limpiamos la tabla del servidor de la partida
+        for (int num=table_model_partida_servidor.getRowCount()-1; num>=0; num--){
+            table_model_partida_servidor.removeRow(num);
+        }
     }
     
     /**
@@ -1831,5 +1882,10 @@ public class Ventana1 extends javax.swing.JFrame {
     private String IdPartidaSeleccionado;
     private String antiguaIdServerPartida;
     private String[] idsJugadores_Partida;
+    
+    
+    private DefaultTableModel table_model_partida_jugadores;
+    private DefaultTableModel table_model_partida_servidor;
+
     
 }
