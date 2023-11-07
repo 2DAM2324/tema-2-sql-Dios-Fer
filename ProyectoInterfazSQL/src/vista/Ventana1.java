@@ -1264,6 +1264,9 @@ public class Ventana1 extends javax.swing.JFrame {
             actualizar_vista_partida();
             limpiar_vista_Partida();
         }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado ninguna partida", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton_borrar_partidaActionPerformed
 
     private void jButton_modificar_partidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_modificar_partidaActionPerformed
@@ -1293,6 +1296,9 @@ public class Ventana1 extends javax.swing.JFrame {
             jTextField_JugadoresPartida.setText(ids);
             idsJugadores_Partida=jTextField_JugadoresPartida.getText().toString().split(", ");
        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado ninguna partida", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton_modificar_partidaActionPerformed
 
     private void jButton_aniadir_partidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_aniadir_partidaActionPerformed
@@ -1311,7 +1317,7 @@ public class Ventana1 extends javax.swing.JFrame {
                             String[] idsjugadores=jTextField_JugadoresPartida.getText().toString().split(", ");
                             for (String ide : idsjugadores) {
                                 if(!controller.comprobarExistenciaIdJugador(ide)){
-                                    existen=true;
+                                    existen=false;
                                 }
                             }
                             if (jTextField_JugadoresPartida.getText().toString().trim().equals("")){
@@ -1319,7 +1325,7 @@ public class Ventana1 extends javax.swing.JFrame {
                             }
                             if (existen){
                                 Boolean usadas=false;
-
+                                    
                                 for (String idu : idsjugadores) {
                                     if(controller.comprobarUsoIdJugador(idu)){
                                         usadas=true;
@@ -1329,7 +1335,7 @@ public class Ventana1 extends javax.swing.JFrame {
                                 
                                 if (!usadas){ 
                                     Boolean duplicados = false;
-                                    
+                                                                        
                                     for (int num1=0; num1<idsjugadores.length-1; num1++) {
                                         
                                         for (int num2 = num1+1; num2<idsjugadores.length; num2++){
@@ -1352,12 +1358,36 @@ public class Ventana1 extends javax.swing.JFrame {
                                         limpiar_vista_Partida();
                                     
                                     }
+                                    else{ 
+                                        JOptionPane.showMessageDialog(this, "Se duplican jugadores", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                }
+                                else{ 
+                                    JOptionPane.showMessageDialog(this, "Algun jugador ya esta en alguna partida", "Error en insercion", JOptionPane.ERROR_MESSAGE);
                                 }
                             }
+                            else{ 
+                                JOptionPane.showMessageDialog(this, "Error en los jugadores", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        else{ 
+                            JOptionPane.showMessageDialog(this, "El Id-Server ya esta siendo usado", "Error en insercion", JOptionPane.ERROR_MESSAGE);
                         }
                     }
+                    else{ 
+                        JOptionPane.showMessageDialog(this, "No existe Id-Server", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{ 
+                    JOptionPane.showMessageDialog(this, "Entero no valido", "Error en insercion", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            else{ 
+            JOptionPane.showMessageDialog(this, "Entero no valido", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "Los datos no son validos", "Error en insercion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_aniadir_partidaActionPerformed
 
@@ -1368,74 +1398,104 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void jButton_guardar_partidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardar_partidaActionPerformed
         //Filtros
-        if((!jTextField_IdServer_Partida.getText().toString().trim().equals("") && !jTextField_NumEspectadores.getText().toString().trim().equals(""))&& (!IdPartidaSeleccionado.equals(""))){
-            if (esEntero(jTextField_NumEspectadores.getText().toString())){
+        if ((!IdPartidaSeleccionado.equals(""))){
 
-                if (((Integer.parseInt(jTextField_NumEspectadores.getText().toString()))>=0)){
+            if((!jTextField_IdServer_Partida.getText().toString().trim().equals("") && !jTextField_NumEspectadores.getText().toString().trim().equals(""))){
+                if (esEntero(jTextField_NumEspectadores.getText().toString())){
 
-                    if (controller.existeIDServer(jTextField_IdServer_Partida.getText().toString())){
+                    if (((Integer.parseInt(jTextField_NumEspectadores.getText().toString()))>=0)){
 
-                        if (controller.estaLibreIDServer(jTextField_IdServer_Partida.getText().toString()) || antiguaIdServerPartida.equals(jTextField_IdServer_Partida.getText().toString())){
+                        if (controller.existeIDServer(jTextField_IdServer_Partida.getText().toString())){
 
-                            Boolean existen=true;
-                            String[] idsjugadores=jTextField_JugadoresPartida.getText().toString().split(", ");
-                            for (String ide : idsjugadores) {
-                                if(!controller.comprobarExistenciaIdJugador(ide)){
-                                    existen=false;
+                            if (controller.estaLibreIDServer(jTextField_IdServer_Partida.getText().toString()) || antiguaIdServerPartida.equals(jTextField_IdServer_Partida.getText().toString())){
+
+                                Boolean existen=true;
+                                String[] idsjugadores=jTextField_JugadoresPartida.getText().toString().split(", ");
+                                for (String ide : idsjugadores) {
+                                    if(!controller.comprobarExistenciaIdJugador(ide)){
+                                        existen=false;
+                                    }
                                 }
-                            }
-                            if (jTextField_JugadoresPartida.getText().toString().trim().equals("")){
-                                existen=true;
-                            }
-                            if (existen){
-                                Boolean usadas=false;
-                                for (String idu : idsjugadores) {
+                                if (jTextField_JugadoresPartida.getText().toString().trim().equals("")){
+                                    existen=true;
+                                }
+                                if (existen){
+                                    Boolean usadas=false;
+                                    for (String idu : idsjugadores) {
 
-                                    if(controller.comprobarUsoIdJugador(idu)){
+                                        if(controller.comprobarUsoIdJugador(idu)){
 
-                                        usadas=true;
-                                        for (String idA : idsJugadores_Partida) {
+                                            usadas=true;
+                                            for (String idA : idsJugadores_Partida) {
 
-                                            if (idu.equals(idA)){
-                                                usadas=false;
+                                                if (idu.equals(idA)){
+                                                    usadas=false;
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                    if (!usadas){
+
+                                        Boolean duplicados = false;
+
+                                        for (int num1=0; num1<idsjugadores.length-1; num1++) {
+
+                                            for (int num2 = num1+1; num2<idsjugadores.length; num2++){
+                                                if (idsjugadores[num1].equals(idsjugadores[num2])){
+                                                    duplicados=true;
+                                                }
                                             }
                                         }
 
-                                    }
-                                }
-                                
-                                if (!usadas){
 
-                                    Boolean duplicados = false;
-                                    
-                                    for (int num1=0; num1<idsjugadores.length-1; num1++) {
-                                        
-                                        for (int num2 = num1+1; num2<idsjugadores.length; num2++){
-                                            if (idsjugadores[num1].equals(idsjugadores[num2])){
-                                                duplicados=true;
-                                            }
+                                        if (!duplicados){
+
+
+                                            idsJugadores_Partida=jTextField_JugadoresPartida.getText().toString().split(", ");
+                                            //Pasamos datos al controlador, este modifica el objeto y lo actualiza
+                                            controller.ModificarPartida(IdPartidaSeleccionado, Integer.parseInt(jTextField_NumEspectadores.getText().toString()), jTextField_IdServer_Partida.getText().toString(), idsJugadores_Partida);
+
+                                            //Actualizar vista
+                                            actualizar_vista_partida();
+                                            limpiar_vista_Partida();
+
+                                        }
+                                        else{ 
+                                            JOptionPane.showMessageDialog(this, "Has repetido algun jugador", "Error en insercion", JOptionPane.ERROR_MESSAGE);
                                         }
                                     }
-                                    
-
-                                    if (!duplicados){
-
-
-                                        idsJugadores_Partida=jTextField_JugadoresPartida.getText().toString().split(", ");
-                                        //Pasamos datos al controlador, este modifica el objeto y lo actualiza
-                                        controller.ModificarPartida(IdPartidaSeleccionado, Integer.parseInt(jTextField_NumEspectadores.getText().toString()), jTextField_IdServer_Partida.getText().toString(), idsJugadores_Partida);
-
-                                        //Actualizar vista
-                                        actualizar_vista_partida();
-                                        limpiar_vista_Partida();
-                                        
+                                    else{ 
+                                        JOptionPane.showMessageDialog(this, "Algunos jugadores ya estan en una partida", "Error en insercion", JOptionPane.ERROR_MESSAGE);
                                     }
                                 }
+                                else{ 
+                                    JOptionPane.showMessageDialog(this, "Fallo en la insercion de jugadores", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                            else{ 
+                                JOptionPane.showMessageDialog(this, "La Id-Server esta en uso", "Error en insercion", JOptionPane.ERROR_MESSAGE);
                             }
                         }
+                        else{ 
+                            JOptionPane.showMessageDialog(this, "La Id-Server no existe", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else{ 
+                        JOptionPane.showMessageDialog(this, "El entero no es valido", "Error en insercion", JOptionPane.ERROR_MESSAGE);
                     }
                 }
+                else{ 
+                    JOptionPane.showMessageDialog(this, "El entero no es valido", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+                }
             }
+            else{ 
+                JOptionPane.showMessageDialog(this, "Los datos no son validos", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se esta modificando ningun elemnto", "Error de seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_guardar_partidaActionPerformed
 
@@ -1655,6 +1715,9 @@ public class Ventana1 extends javax.swing.JFrame {
             jTextField_JugadoresPartida.setText(ids);
             idsJugadores_Partida=jTextField_JugadoresPartida.getText().toString().split(", ");
        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado ninguna partida", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton_detalles_PartidaActionPerformed
 
     private void jButton_detalles_InventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_InventarioActionPerformed
@@ -1678,6 +1741,7 @@ public class Ventana1 extends javax.swing.JFrame {
             jTextField_JugadoresConAcceso.setText(ids);
         
         }
+        
     }//GEN-LAST:event_jButton_detalles_InventarioActionPerformed
 
     private void jButton_detalles_JugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_JugadorActionPerformed
