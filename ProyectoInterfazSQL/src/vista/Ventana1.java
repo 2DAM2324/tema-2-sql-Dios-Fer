@@ -1212,7 +1212,7 @@ public class Ventana1 extends javax.swing.JFrame {
                 
             }
             else{ 
-                JOptionPane.showMessageDialog(this, "El servidor esta siendo utilizado", "Error en eliminado", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El servidor esta siendo utilizado", "Error en dependencia", JOptionPane.ERROR_MESSAGE);
             }
         }
         else{ 
@@ -1228,18 +1228,23 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void jButton_guardar_Servidor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardar_Servidor
         //Filtros
-        if((!jTextField_region.getText().toString().trim().equals("")) && (IdServerSeleccionado!="")){
-            
-            //Pasamos datos al controlador, este modifica el objeto y lo actualiza
-            controller.ModificarServidor(IdServerSeleccionado, jTextField_region.getText().toString());
+        if (!IdServerSeleccionado.equals("")){
+            if(!jTextField_region.getText().toString().trim().equals("")){
 
-            // Actualizar vista
-            actualizar_vista_server();
-            limpiar_vista_Servidor();
+                //Pasamos datos al controlador, este modifica el objeto y lo actualiza
+                controller.ModificarServidor(IdServerSeleccionado, jTextField_region.getText().toString());
 
+                // Actualizar vista
+                actualizar_vista_server();
+                limpiar_vista_Servidor();
+
+            }
+            else{ 
+                JOptionPane.showMessageDialog(this, "Los datos no son validos", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+            }
         }
         else{ 
-            JOptionPane.showMessageDialog(this, "Los datos no son validos", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se ha seleccionado nada", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_guardar_Servidor
 
@@ -1543,6 +1548,12 @@ public class Ventana1 extends javax.swing.JFrame {
                 limpiar_vista_Jugador();
                 
             }
+            else{ 
+                JOptionPane.showMessageDialog(this, "El jugador esta actualmente en una partida", "Error de dependencia", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado el elemento", "Error de seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_borrar_jugadorActionPerformed
 
@@ -1565,6 +1576,9 @@ public class Ventana1 extends javax.swing.JFrame {
                 }
             }
             jTextField_InventariosJugador.setText(ids);
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado el elemento", "Error de seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_modificar_jugadorActionPerformed
 
@@ -1611,11 +1625,26 @@ public class Ventana1 extends javax.swing.JFrame {
                             limpiar_vista_Jugador();
                             
                         }
+                        else{ 
+                            JOptionPane.showMessageDialog(this, "Se han duplicado inventarios", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else{ 
+                            JOptionPane.showMessageDialog(this, "Algunos inventarios no existen", "Error de insercion", JOptionPane.ERROR_MESSAGE);
                     }
                     
                 }
+                else{ 
+                    JOptionPane.showMessageDialog(this, "Entero no valido", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+                }
             
             }
+            else{ 
+                JOptionPane.showMessageDialog(this, "Entero no valido", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "Datos no validos", "Error de insercion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_aniadir_jugadorActionPerformed
 
@@ -1625,50 +1654,72 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void jButton_guardar_jugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardar_jugadorActionPerformed
         //Filtros
-        if((!jTextField_NickName.getText().toString().trim().equals("") && !jTextField_Nivel.getText().toString().trim().equals(""))&& (!IdJugadorSeleccionado.equals(""))){
+        if (!IdJugadorSeleccionado.equals("")){
+            
 
-            if (esEntero(jTextField_Nivel.getText().toString())){
-                                
-                if (((Integer.parseInt(jTextField_Nivel.getText().toString()))>=0)){
-                    
-                    idsInventarios_Jugador=jTextField_InventariosJugador.getText().toString().split(", ");
-                    Boolean existen=true;
-                    for (String id : idsInventarios_Jugador){
-                        if (!controller.existeIDInventario(id)){
-                            existen=false;
-                        }
-                    }
-                    
-                    if ((idsInventarios_Jugador[0].trim().equals("") && idsInventarios_Jugador.length==1) ){
-                        existen=true;
-                    }
+            if(!jTextField_NickName.getText().toString().trim().equals("") && !jTextField_Nivel.getText().toString().trim().equals("")){
 
-                    if (existen){
-                        
-                        Boolean duplicados = false;
+                if (esEntero(jTextField_Nivel.getText().toString())){
 
-                        for (int num1=0; num1<idsInventarios_Jugador.length-1; num1++) {
+                    if (((Integer.parseInt(jTextField_Nivel.getText().toString()))>=0)){
 
-                            for (int num2 = num1+1; num2<idsInventarios_Jugador.length; num2++){
-                                if (idsInventarios_Jugador[num1].equals(idsInventarios_Jugador[num2])){
-                                    duplicados=true;
-                                }
+                        idsInventarios_Jugador=jTextField_InventariosJugador.getText().toString().split(", ");
+                        Boolean existen=true;
+                        for (String id : idsInventarios_Jugador){
+                            if (!controller.existeIDInventario(id)){
+                                existen=false;
                             }
                         }
 
+                        if ((idsInventarios_Jugador[0].trim().equals("") && idsInventarios_Jugador.length==1) ){
+                            existen=true;
+                        }
 
-                        if (!duplicados){
-                    
-                            //Pasamos datos al controlador, este modifica el objeto y lo actualiza
-                            controller.ModificarJugador(IdJugadorSeleccionado, jTextField_NickName.getText().toString(), Integer.parseInt(jTextField_Nivel.getText().toString()), idsInventarios_Jugador);
+                        if (existen){
 
-                            //Actualizar vista
-                            actualizar_vista_jugador();
-                            limpiar_vista_Jugador();
+                            Boolean duplicados = false;
+
+                            for (int num1=0; num1<idsInventarios_Jugador.length-1; num1++) {
+
+                                for (int num2 = num1+1; num2<idsInventarios_Jugador.length; num2++){
+                                    if (idsInventarios_Jugador[num1].equals(idsInventarios_Jugador[num2])){
+                                        duplicados=true;
+                                    }
+                                }
+                            }
+
+
+                            if (!duplicados){
+
+                                //Pasamos datos al controlador, este modifica el objeto y lo actualiza
+                                controller.ModificarJugador(IdJugadorSeleccionado, jTextField_NickName.getText().toString(), Integer.parseInt(jTextField_Nivel.getText().toString()), idsInventarios_Jugador);
+
+                                //Actualizar vista
+                                actualizar_vista_jugador();
+                                limpiar_vista_Jugador();
+                            }
+                            else{ 
+                                JOptionPane.showMessageDialog(this, "Se han duplicado inventarios", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        else{ 
+                            JOptionPane.showMessageDialog(this, "Algunos inventarios no existen", "Error de insercion", JOptionPane.ERROR_MESSAGE);
                         }
                     }
+                    else{ 
+                        JOptionPane.showMessageDialog(this, "Entero no valido", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{ 
+                    JOptionPane.showMessageDialog(this, "Entero no valido", "Error de insercion", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            else{ 
+                JOptionPane.showMessageDialog(this, "Datos no validos", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{ 
+                JOptionPane.showMessageDialog(this, "No se ha seleccionado nada", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_guardar_jugadorActionPerformed
 
@@ -1762,6 +1813,9 @@ public class Ventana1 extends javax.swing.JFrame {
                 }
             }
             jTextField_InventariosJugador.setText(ids);
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado nada", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_detalles_JugadorActionPerformed
 
