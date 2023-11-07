@@ -1178,6 +1178,9 @@ public class Ventana1 extends javax.swing.JFrame {
             actualizar_vista_server();
             limpiar_vista_Servidor();
         }
+        else{ 
+            JOptionPane.showMessageDialog(this, "Los datos no son validos", "Error en insercion", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton_aniadir_serverActionPerformed
 
     private void jButton_modificar_serverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_modificar_serverActionPerformed
@@ -1186,6 +1189,9 @@ public class Ventana1 extends javax.swing.JFrame {
             limpiar_vista_Servidor();
             IdServerSeleccionado = servidores_vista.get(jTable_server.getSelectedRow()).getIdServer();
             jTextField_region.setText(servidores_vista.get(jTable_server.getSelectedRow()).getRegion());
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado nada", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_jButton_modificar_serverActionPerformed
@@ -1205,9 +1211,12 @@ public class Ventana1 extends javax.swing.JFrame {
                 limpiar_vista_Servidor();
                 
             }
-            else{ //TODO mensaje en todos
+            else{ 
                 JOptionPane.showMessageDialog(this, "El servidor esta siendo utilizado", "Error en eliminado", JOptionPane.ERROR_MESSAGE);
             }
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado nada", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_jButton_borrar_serverActionPerformed
@@ -1228,6 +1237,9 @@ public class Ventana1 extends javax.swing.JFrame {
             actualizar_vista_server();
             limpiar_vista_Servidor();
 
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "Los datos no son validos", "Error en insercion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_guardar_Servidor
 
@@ -1695,6 +1707,9 @@ public class Ventana1 extends javax.swing.JFrame {
             limpiar_vista_Servidor();
             jTextField_region.setText(servidores_vista.get(jTable_server.getSelectedRow()).getRegion());
            
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado nada", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_detalles_ServidorActionPerformed
 
