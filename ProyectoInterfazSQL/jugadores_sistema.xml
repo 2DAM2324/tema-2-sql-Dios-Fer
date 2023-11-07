@@ -6,8 +6,8 @@
       <NickName>Fer</NickName>
       <Nivel>100</Nivel>
       <Inventarios>
-        <IdInventario>I-3</IdInventario>
         <IdInventario>I-4</IdInventario>
+        <IdInventario>I-3</IdInventario>
       </Inventarios>
     </Jugador>
     <Jugador>
@@ -16,9 +16,9 @@
       <Nivel>50</Nivel>
       <Inventarios>
         <IdInventario>I-2</IdInventario>
-        <IdInventario>I-3</IdInventario>
         <IdInventario>I-4</IdInventario>
         <IdInventario>I-1</IdInventario>
+        <IdInventario>I-3</IdInventario>
       </Inventarios>
     </Jugador>
     <Jugador>
@@ -44,8 +44,8 @@
       <Nivel>10</Nivel>
       <Inventarios>
         <IdInventario>I-2</IdInventario>
-        <IdInventario>I-3</IdInventario>
         <IdInventario>I-5</IdInventario>
+        <IdInventario>I-3</IdInventario>
       </Inventarios>
     </Jugador>
   </Jugadores>

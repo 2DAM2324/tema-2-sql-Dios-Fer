@@ -23,7 +23,7 @@
     <Inventario>
       <IdInventario>I-3</IdInventario>
       <SlotsMaximos>999</SlotsMaximos>
-      <SlotsOcupados>99</SlotsOcupados>
+      <SlotsOcupados>88</SlotsOcupados>
       <Jugadores>
         <IdJugador>J-1</IdJugador>
         <IdJugador>J-2</IdJugador>

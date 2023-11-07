@@ -93,7 +93,8 @@ public class Ventana1 extends javax.swing.JFrame {
         table_model_partida_jugadores = (DefaultTableModel) jTable_jugadorPartida.getModel();
         table_model_partida_servidor = (DefaultTableModel) jTable_serverPartida.getModel();
         table_model_inventarios_en_jugador = (DefaultTableModel) jTable_InventariosJugador.getModel();
-
+        table_model_jugador_en_inventarios = (DefaultTableModel) jTable_jugadoresInventario.getModel();
+        
         actualizar_vista_server();
         actualizar_vista_inventario();
         actualizar_vista_jugador();
@@ -1069,6 +1070,9 @@ public class Ventana1 extends javax.swing.JFrame {
 
                 ids += (inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadorConAcceso(i).getIdPlayer());
 
+                //Actualizamos la tabla de los detalles
+                table_model_jugador_en_inventarios.addRow(new Object[]{(inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadorConAcceso(i).getIdPlayer()), (inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadorConAcceso(i).getNivel()), (inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadorConAcceso(i).getNickName())});
+
                 if (i != inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadores().size()-1){
                     ids+= ", ";
                 }
@@ -1201,7 +1205,11 @@ public class Ventana1 extends javax.swing.JFrame {
                 limpiar_vista_Servidor();
                 
             }
+            else{ //TODO mensaje en todos
+                JOptionPane.showMessageDialog(this, "El servidor esta siendo utilizado", "Error en eliminado", JOptionPane.ERROR_MESSAGE);
+            }
         }
+        
     }//GEN-LAST:event_jButton_borrar_serverActionPerformed
 
     private void jButton_cancelar_serverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_cancelar_serverActionPerformed
@@ -1593,19 +1601,19 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_guardar_jugadorActionPerformed
 
     private void jTable_serverPartidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_serverPartidaMouseClicked
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTable_serverPartidaMouseClicked
 
     private void jTable_jugadorPartidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_jugadorPartidaMouseClicked
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTable_jugadorPartidaMouseClicked
 
     private void jTable_InventariosJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_InventariosJugadorMouseClicked
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTable_InventariosJugadorMouseClicked
 
     private void jTable_jugadoresInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_jugadoresInventarioMouseClicked
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTable_jugadoresInventarioMouseClicked
 
     private void jButton_detalles_PartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_PartidaActionPerformed
@@ -1638,7 +1646,26 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_detalles_PartidaActionPerformed
 
     private void jButton_detalles_InventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_InventarioActionPerformed
-        // TODO add your handling code here:
+        //Mostramos los detalles
+        if (jTable_Inventario.getSelectedRow() != -1) {
+            limpiar_vista_Inventario();
+            jTextField_SlotsMaximos.setText(Integer.toString(inventarios_vista.get(jTable_Inventario.getSelectedRow()).getSlotsMaximos()));
+            jTextField_SlotsOcupados.setText(Integer.toString(inventarios_vista.get(jTable_Inventario.getSelectedRow()).getSlotsOcupados()));
+            String ids="";
+            for (int i=0; i<inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadores().size(); i++){
+
+                ids += (inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadorConAcceso(i).getIdPlayer());
+                
+                //Actualizamos la tabla de los detalles
+                table_model_jugador_en_inventarios.addRow(new Object[]{(inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadorConAcceso(i).getIdPlayer()), (inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadorConAcceso(i).getNivel()), (inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadorConAcceso(i).getNickName())});
+                
+                if (i != inventarios_vista.get(jTable_Inventario.getSelectedRow()).getJugadores().size()-1){
+                    ids+= ", ";
+                }
+            }
+            jTextField_JugadoresConAcceso.setText(ids);
+        
+        }
     }//GEN-LAST:event_jButton_detalles_InventarioActionPerformed
 
     private void jButton_detalles_JugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_detalles_JugadorActionPerformed
@@ -1877,10 +1904,14 @@ public class Ventana1 extends javax.swing.JFrame {
      * @brief Vacia los campos de escritura y la seleccion de la pestaña inventario
      */
     public void limpiar_vista_Inventario (){
-            jTextField_SlotsMaximos.setText("");
-            jTextField_SlotsOcupados.setText("");
-            IdInventarioSeleccionado="";
-            jTextField_JugadoresConAcceso.setText("");
+        jTextField_SlotsMaximos.setText("");
+        jTextField_SlotsOcupados.setText("");
+        IdInventarioSeleccionado="";
+        jTextField_JugadoresConAcceso.setText("");
+
+        for (int i=table_model_jugador_en_inventarios.getRowCount()-1; i>=0; i--){
+            table_model_jugador_en_inventarios.removeRow(i);
+        }
     }
     
     
@@ -1915,6 +1946,7 @@ public class Ventana1 extends javax.swing.JFrame {
     
     private DefaultTableModel table_model_inventarios_en_jugador;
 
+    private DefaultTableModel table_model_jugador_en_inventarios;
 
     
 }
