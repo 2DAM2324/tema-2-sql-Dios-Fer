@@ -1050,11 +1050,26 @@ public class Ventana1 extends javax.swing.JFrame {
                             limpiar_vista_Inventario();
 
                         }
+                        else{
+                            JOptionPane.showMessageDialog(this, "Se han duplicado jugadores", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else{ 
+                        JOptionPane.showMessageDialog(this, "Algunos jugadores no existen", "Error de insercion", JOptionPane.ERROR_MESSAGE);
                     }
                     
                 }
+                else{ 
+                    JOptionPane.showMessageDialog(this, "Entero no valido", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+                }
             
             }
+            else{ 
+                JOptionPane.showMessageDialog(this, "Entero no valido", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "Datos no validos", "Error de insercion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_aniadir_iventarioActionPerformed
 
@@ -1080,6 +1095,9 @@ public class Ventana1 extends javax.swing.JFrame {
             jTextField_JugadoresConAcceso.setText(ids);
         
         }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado el elemento", "Error de seleccion", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton_modificar_inventarioActionPerformed
 
     private void jButton_borrar_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_borrar_inventarioActionPerformed
@@ -1096,6 +1114,12 @@ public class Ventana1 extends javax.swing.JFrame {
                 actualizar_vista_inventario();
                 limpiar_vista_Inventario();
             }
+            else{ 
+                JOptionPane.showMessageDialog(this, "El inventario tiene jugadores con acceso", "Error de dependencia", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado el elemento", "Error de seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_borrar_inventarioActionPerformed
 
@@ -1106,56 +1130,77 @@ public class Ventana1 extends javax.swing.JFrame {
 
     private void jButton_guardar_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_guardar_inventarioActionPerformed
         //Filtros 
-        if((!jTextField_SlotsMaximos.getText().toString().trim().equals("") && !jTextField_SlotsOcupados.getText().toString().trim().equals(""))&& (!IdInventarioSeleccionado.equals(""))){
+        if (!IdInventarioSeleccionado.equals("")){
 
-            if (esEntero(jTextField_SlotsMaximos.getText().toString()) && esEntero(jTextField_SlotsOcupados.getText().toString())){
-                
-                if (((Integer.parseInt(jTextField_SlotsMaximos.getText().toString()))>=0) && ((Integer.parseInt(jTextField_SlotsOcupados.getText().toString()))>=0)){
+            if((!jTextField_SlotsMaximos.getText().toString().trim().equals("") && !jTextField_SlotsOcupados.getText().toString().trim().equals(""))){
 
-                    
-                    idsJugadores_Inventario=jTextField_JugadoresConAcceso.getText().toString().split(", ");
-                    Boolean existen=true;
-                    for (String id : idsJugadores_Inventario){
-                        if (!controller.existeIDJugador(id)){
-                            existen=false;
+                if (esEntero(jTextField_SlotsMaximos.getText().toString()) && esEntero(jTextField_SlotsOcupados.getText().toString())){
+
+                    if (((Integer.parseInt(jTextField_SlotsMaximos.getText().toString()))>=0) && ((Integer.parseInt(jTextField_SlotsOcupados.getText().toString()))>=0)){
+
+
+                        idsJugadores_Inventario=jTextField_JugadoresConAcceso.getText().toString().split(", ");
+                        Boolean existen=true;
+                        for (String id : idsJugadores_Inventario){
+                            if (!controller.existeIDJugador(id)){
+                                existen=false;
+                            }
                         }
-                    }
-                    
-                    if ((idsJugadores_Inventario[0].trim().equals("") && idsJugadores_Inventario.length==1) ){
-                        existen=true;
-                    }
 
-                    
-                    
-                    if (existen){
-                        
-                        Boolean duplicados = false;
-                                    
-                                    for (int num1=0; num1<idsJugadores_Inventario.length-1; num1++) {
-                                        
-                                        for (int num2 = num1+1; num2<idsJugadores_Inventario.length; num2++){
-                                            if (idsJugadores_Inventario[num1].equals(idsJugadores_Inventario[num2])){
-                                                duplicados=true;
+                        if ((idsJugadores_Inventario[0].trim().equals("") && idsJugadores_Inventario.length==1) ){
+                            existen=true;
+                        }
+
+
+
+                        if (existen){
+
+                            Boolean duplicados = false;
+
+                                        for (int num1=0; num1<idsJugadores_Inventario.length-1; num1++) {
+
+                                            for (int num2 = num1+1; num2<idsJugadores_Inventario.length; num2++){
+                                                if (idsJugadores_Inventario[num1].equals(idsJugadores_Inventario[num2])){
+                                                    duplicados=true;
+                                                }
                                             }
                                         }
-                                    }
 
 
-                        if (!duplicados){
+                            if (!duplicados){
 
-                            //Pasamos datos al controlador, este modifica el objeto y lo actualiza
-                            controller.ModificarInventario(IdInventarioSeleccionado, Integer.parseInt(jTextField_SlotsMaximos.getText().toString()), Integer.parseInt(jTextField_SlotsOcupados.getText().toString()), idsJugadores_Inventario);
-                            
+                                //Pasamos datos al controlador, este modifica el objeto y lo actualiza
+                                controller.ModificarInventario(IdInventarioSeleccionado, Integer.parseInt(jTextField_SlotsMaximos.getText().toString()), Integer.parseInt(jTextField_SlotsOcupados.getText().toString()), idsJugadores_Inventario);
 
-                            // Actualizamos vista
-                            actualizar_vista_inventario();
-                            limpiar_vista_Inventario();
-                            
-                            
+
+                                // Actualizamos vista
+                                actualizar_vista_inventario();
+                                limpiar_vista_Inventario();
+
+
+                            }
+                            else{ 
+                                JOptionPane.showMessageDialog(this, "Se han duplicado jugadores", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        else{ 
+                            JOptionPane.showMessageDialog(this, "Algunos jugadores no existen", "Error de insercion", JOptionPane.ERROR_MESSAGE);
                         }
                     }
+                    else{ 
+                        JOptionPane.showMessageDialog(this, "Entero no valido", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{ 
+                    JOptionPane.showMessageDialog(this, "Entero no valido", "Error de insercion", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            else{ 
+                JOptionPane.showMessageDialog(this, "Datos no validos", "Error de insercion", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado el elemento", "Error de seleccion", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton_guardar_inventarioActionPerformed
 
@@ -1791,6 +1836,9 @@ public class Ventana1 extends javax.swing.JFrame {
             }
             jTextField_JugadoresConAcceso.setText(ids);
         
+        }
+        else{ 
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado el elemento", "Error de seleccion", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_jButton_detalles_InventarioActionPerformed
