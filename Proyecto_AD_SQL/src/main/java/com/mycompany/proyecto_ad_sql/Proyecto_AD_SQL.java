@@ -1,19 +1,15 @@
-package proyectointerfazSQL;
+package com.mycompany.proyecto_ad_sql;
+
 import java.io.IOException;
 import org.xml.sax.SAXException;
-import vista.Ventana1;
-
-
+import com.mycompany.proyecto_ad_sql.vista.Ventana1;
 
 /**
  *
- * @author Fernando Ortega Castro
+ * @author DiosFer
  */
-public class ProyectoInterfaz {  
+public class Proyecto_AD_SQL {
     
-     /**
-     * @brief main
-     */
     public static void main(String[] args) {
         
         Ventana1 v;

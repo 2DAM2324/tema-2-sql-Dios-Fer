@@ -9,14 +9,14 @@
  * @author Fernando Ortega Castro
  */
 
-package vista;
-import Clases.InventarioCompartido;
-import Clases.Jugador;
-import Clases.Partida;
-import Clases.Servidor;
+package com.mycompany.proyecto_ad_sql.vista;
+import com.mycompany.proyecto_ad_sql.modelos.InventarioCompartido;
+import com.mycompany.proyecto_ad_sql.modelos.Jugador;
+import com.mycompany.proyecto_ad_sql.modelos.Partida;
+import com.mycompany.proyecto_ad_sql.modelos.Servidor;
 
 
-import Controller.Controller;
+import com.mycompany.proyecto_ad_sql.controller.Controller;
 
 
 import java.awt.Color;
@@ -1954,7 +1954,7 @@ public class Ventana1 extends javax.swing.JFrame {
    
 
     public void formWindowClosing (java.awt.event.WindowEvent evt){
-        
+        controller.cerrar_conexion();
     }
     
     /**

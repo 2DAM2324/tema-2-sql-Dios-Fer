@@ -1,8 +1,14 @@
-package Controller;
-import Clases.InventarioCompartido;
-import Clases.Jugador;
-import Clases.Partida;
-import Clases.Servidor;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.proyecto_ad_sql.controller;
+
+import com.mycompany.proyecto_ad_sql.conexion.Conexion;
+import com.mycompany.proyecto_ad_sql.modelos.InventarioCompartido;
+import com.mycompany.proyecto_ad_sql.modelos.Jugador;
+import com.mycompany.proyecto_ad_sql.modelos.Partida;
+import com.mycompany.proyecto_ad_sql.modelos.Servidor;
 import java.util.ArrayList;
 
 /// xml
@@ -32,13 +38,12 @@ import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 
-///
-
 /**
  *
- * @author Fernando Ortega Castro
+ * @author DiosFer
  */
-public class Controller { 
+public class Controller {
+
 
     private ArrayList<Servidor> servidores_sistema;
     private ArrayList<InventarioCompartido> inventarios_sistema;
@@ -46,6 +51,8 @@ public class Controller {
     private ArrayList<Jugador> jugadores_sistema;
 
     private ArrayList<ArrayList<String>> arrayAuxiliarDeArraysCarga; // Para la carrga de inventarios (parcial)
+    
+    private Conexion conn;
     
      /**
      * @brief Constructor del controlador con la lectura inicial del xml
@@ -58,11 +65,20 @@ public class Controller {
             
             arrayAuxiliarDeArraysCarga = new ArrayList<ArrayList<String>>();
             
+            
+            conn = new Conexion();
+
+            
+            
             this.leerXML_inventario();
             this.leerXML_jugador();
             this.leerXML_servidor();
             this.leerXML_partida();
             this.enlazarInventarioJugador();
+    }
+    
+    public void cerrar_conexion (){
+        conn.cerrarConexion();
     }
     
     /*////////////////////////////////////////////////////////
