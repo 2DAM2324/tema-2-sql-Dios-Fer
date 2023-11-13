@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.proyecto_ad_sql.controller;
 
 import com.mycompany.proyecto_ad_sql.conexion.Conexion;
@@ -44,7 +40,8 @@ import org.w3c.dom.Document;
  */
 public class Controller {
 
-
+    private Conexion conn;
+    
     private ArrayList<Servidor> servidores_sistema;
     private ArrayList<InventarioCompartido> inventarios_sistema;
     private ArrayList<Partida> partidas_sistema;
@@ -52,13 +49,17 @@ public class Controller {
 
     private ArrayList<ArrayList<String>> arrayAuxiliarDeArraysCarga; // Para la carrga de inventarios (parcial)
     
-    private Conexion conn;
+    
     
      /**
      * @brief Constructor del controlador con la lectura inicial del xml
      */
     public Controller () {
-            servidores_sistema = new ArrayList<Servidor>();
+            
+            conn = new Conexion();
+            
+            
+            servidores_sistema = conn.getServidoresSQL();
             inventarios_sistema = new ArrayList<InventarioCompartido>();
             partidas_sistema = new ArrayList<Partida>();
             jugadores_sistema = new ArrayList<Jugador>();
@@ -66,13 +67,13 @@ public class Controller {
             arrayAuxiliarDeArraysCarga = new ArrayList<ArrayList<String>>();
             
             
-            conn = new Conexion();
+            
 
             
             
             this.leerXML_inventario();
             this.leerXML_jugador();
-            this.leerXML_servidor();
+            //this.leerXML_servidor();
             this.leerXML_partida();
             this.enlazarInventarioJugador();
     }
