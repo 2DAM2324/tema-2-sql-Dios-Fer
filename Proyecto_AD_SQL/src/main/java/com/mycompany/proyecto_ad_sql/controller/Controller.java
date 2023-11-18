@@ -99,8 +99,8 @@ public class Controller {
         int i=0;
         for (i=0; i<servidores_sistema.size() && !servidores_sistema.get(i).getIdServer().equals(Id); i++){
         }
-        servidores_sistema.get(i).setRegion(region);
-        this.escribirXML_servidor();
+        conn.ModificarServidorSQL(servidores_sistema.get(i), region);
+
     }
     
     /**

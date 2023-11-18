@@ -107,6 +107,8 @@ public class Conexion {
             sqle.printStackTrace();
         }
     }
+    
+    
     /*////////////////////////////////////////////////////////
     /////////////////////    Insertar    ////////////////////
     //////////////////////////////////////////////////////*/
@@ -152,7 +154,45 @@ public class Conexion {
         
         
     }
+    /*////////////////////////////////////////////////////////
+    ////////////////////    Modificar    ////////////////////
+    //////////////////////////////////////////////////////*/
     
+    /**
+     * @brief Modifica un servidor en la base de datos
+     * @param Servidor s 
+     * @pre que este el objeto en la base de datos
+     * @post se modificara el objeto y la instancia en la base de datos
+     */
+    public void ModificarServidorSQL (Servidor s, String region){
+
+            String sentenciaSql = "UPDATE servidores SET region = ? " + "WHERE id_servidor = ?";
+            PreparedStatement sentencia = null;
+            try {
+                sentencia = conn.prepareStatement(sentenciaSql);
+                
+                //cambios
+                 //region
+                sentencia.setString(1, region);
+                s.setRegion(region);
+                
+                //Id
+                sentencia.setString(2, s.getIdServer().substring(2, s.getIdServer().length()));
+                
+                sentencia.executeUpdate();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } finally {
+                if (sentencia != null)
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+            }
+        
+        
+    }
     
     /*////////////////////////////////////////////////////////
     //////////////////////    Cargas    /////////////////////
