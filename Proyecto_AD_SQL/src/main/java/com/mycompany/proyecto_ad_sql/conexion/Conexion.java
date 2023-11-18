@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -106,7 +107,52 @@ public class Conexion {
             sqle.printStackTrace();
         }
     }
+    /*////////////////////////////////////////////////////////
+    /////////////////////    Insertar    ////////////////////
+    //////////////////////////////////////////////////////*/
+    
+    /**
+     * @brief 
+     * @pre 
+     * @post 
+     */
+    public void InsertarServidorSQL (Servidor s){
 
+        String sent = "INSERT INTO servidores (region) VALUES (?)";
+        PreparedStatement sentencia = null;
+        ResultSet generatedKeys = null;
+        int idGenerado = 0;
+
+        
+        try{
+            sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
+            
+            sentencia.setString(1, s.getRegion());
+            
+            sentencia.executeUpdate();
+            
+            generatedKeys = sentencia.getGeneratedKeys();
+            idGenerado = generatedKeys.getInt(1);
+            
+            s.setIdServer("S-" + idGenerado);
+            
+        }
+        catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+        finally{
+            try{
+                if (sentencia != null)
+                    sentencia.close();
+            }
+            catch(SQLException sqle2){
+                sqle2.printStackTrace();
+            }
+        }
+        
+        
+    }
+    
     
     /*////////////////////////////////////////////////////////
     //////////////////////    Cargas    /////////////////////
@@ -317,7 +363,6 @@ public class Conexion {
             
             for (Partida part : partidas_conexion){
                 cons = "SELECT id_jugador FROM jugadores WHERE id_partida==" + part.getIdPartida().substring(2, part.getIdPartida().length()) + ";";
-                System.out.println(cons);
                 
                 consulta = null;
                 resultado = null;
@@ -326,9 +371,7 @@ public class Conexion {
 
                 resultado = consulta.executeQuery();
                 while(resultado.next()){
-                    System.out.println("J-" + resultado.getString(1).toString());
                     part.setUnJugador(getJugadorById("J-" + resultado.getString(1).toString()));
-                    System.out.println(getJugadorById("J-" + resultado.getString(1).toString()).getNickName());
                 }
             }
         }

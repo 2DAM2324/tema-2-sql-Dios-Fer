@@ -83,8 +83,9 @@ public class Controller {
      * @param String region
      */
     public void crearServidor (String region){
-        servidores_sistema.add (new Servidor (region));
-        this.escribirXML_servidor();
+        Servidor s = new Servidor (region);
+        conn.InsertarServidorSQL(s);
+        servidores_sistema.add (s);
     }
     
     /**
