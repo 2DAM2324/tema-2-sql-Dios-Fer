@@ -26,8 +26,6 @@ public class Conexion {
     private ArrayList<Partida> partidas_conexion;
     private ArrayList<InventarioCompartido> inventarios_conexion;
     private ArrayList<Jugador> jugadores_conexion;
-
-
     
     private static Connection conn = null;
 
@@ -48,7 +46,7 @@ public class Conexion {
         this.CargarInventariosSQL();
         this.CargarJugadoresSQL();
         this.cagarRelacionJI();
-        //TODO partidas
+        this.CargarPartidasSQL();
     }
 
     
@@ -288,7 +286,70 @@ public class Conexion {
         }
     }
     
- 
+     /**
+     * @brief Carga en el vector de la conexion los datos de la base de datos
+     * @pre debe de haber una conexion abierta
+     * @pre debe de haberse cargado previamente los servidores y los jugadores
+     * @post se actualizara el vector de la conexion 
+     */
+    public void CargarPartidasSQL (){
+
+        String cons = "SELECT * FROM partidas;";
+        PreparedStatement consulta = null;
+        ResultSet resultado = null;
+        Partida p;
+
+        partidas_conexion.clear();
+        
+        try{                                
+                                
+            consulta = this.getConection().prepareStatement(cons);
+
+            resultado = consulta.executeQuery();
+            while(resultado.next()){
+
+                p = new Partida ("P-"+resultado.getString(1).toString(), resultado.getInt(2), getServidorById("S-" + resultado.getInt(3)));
+                partidas_conexion.add(p);
+                
+            }
+            
+            //Cargamos los jugadores de la partida
+            
+            for (Partida part : partidas_conexion){
+                cons = "SELECT id_jugador FROM jugadores WHERE id_partida==" + part.getIdPartida().substring(2, part.getIdPartida().length()) + ";";
+                System.out.println(cons);
+                
+                consulta = null;
+                resultado = null;
+                
+                consulta = this.getConection().prepareStatement(cons);
+
+                resultado = consulta.executeQuery();
+                while(resultado.next()){
+                    System.out.println("J-" + resultado.getString(1).toString());
+                    part.setUnJugador(getJugadorById("J-" + resultado.getString(1).toString()));
+                    System.out.println(getJugadorById("J-" + resultado.getString(1).toString()).getNickName());
+                }
+            }
+        }
+        catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+        finally{
+            if (consulta != null){
+                try{
+                   consulta.close();
+                    resultado.close(); 
+                }
+                catch(SQLException sqle2){
+                    sqle2.printStackTrace();
+                }
+                
+            }
+        }
+        
+
+    }
     
     /*////////////////////////////////////////////////////////
     //////////////////////    Get's    //////////////////////
@@ -309,14 +370,14 @@ public class Conexion {
                 encontrado=true;
             }
         }
-        return inventarios_conexion.get(i);
+        return inventarios_conexion.get(i-1);
     }
     
      /**
      * @brief Obtiene un jugador del vector de la conexion
      * @param String id
-     * @pre debe de existir el inventario
-     * @return InventarioCompartido
+     * @pre debe de existir el jugador
+     * @return Jugador
      */
     public Jugador getJugadorById (String id){
         
@@ -327,9 +388,27 @@ public class Conexion {
                 encontrado=true;
             }
         }
-        return jugadores_conexion.get(i);
+        return jugadores_conexion.get(i-1);
     }
-      
+    
+    /**
+     * @brief Obtiene un jugador del vector de la conexion
+     * @param String id
+     * @pre debe de existir el servidor
+     * @return Servidor
+     */
+    public Servidor getServidorById (String id){
+        
+        Boolean encontrado=false;
+        int i=0;
+        for (i=0; i<servidores_conexion.size() && encontrado==false; i++){
+            if (servidores_conexion.get(i).getIdServer().equals(id)){
+                encontrado=true;
+            }
+        }
+        return servidores_conexion.get(i-1);
+    }
+    
       
      /**
      * @brief retorna el vector de la conexion
@@ -353,6 +432,14 @@ public class Conexion {
      */
     public ArrayList<Jugador> getJugadoresSQL (){
         return jugadores_conexion;
+    }
+    
+     /**
+     * @brief retorna el vector de la conexion
+     * @return ArrayList<Partida>
+     */
+    public ArrayList<Partida> getPartidasSQL (){
+        return partidas_conexion;
     }
 }
 

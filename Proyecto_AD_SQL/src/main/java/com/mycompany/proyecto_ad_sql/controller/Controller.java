@@ -64,7 +64,7 @@ public class Controller {
             
             jugadores_sistema = conn.getJugadoresSQL();
 
-            partidas_sistema = new ArrayList<Partida>();
+            partidas_sistema = conn.getPartidasSQL();
             
     }
     

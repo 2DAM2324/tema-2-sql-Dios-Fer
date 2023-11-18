@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <xml>
-  <Partidas/>
+  <Partidas>
+    <Partida>
+      <IdPartida>P-2</IdPartida>
+      <NumEspectadores>20</NumEspectadores>
+      <IdServidorPartida>S-3</IdServidorPartida>
+      <Jugadores>
+        <IdJugador>J-3</IdJugador>
+      </Jugadores>
+    </Partida>
+    <Partida>
+      <IdPartida>P-3</IdPartida>
+      <NumEspectadores>0</NumEspectadores>
+      <IdServidorPartida>S-4</IdServidorPartida>
+      <Jugadores/>
+    </Partida>
+  </Partidas>
 </xml>
