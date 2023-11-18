@@ -58,24 +58,14 @@ public class Controller {
             
             conn = new Conexion();
             
-            
             servidores_sistema = conn.getServidoresSQL();
-            inventarios_sistema = new ArrayList<InventarioCompartido>();
-            partidas_sistema = new ArrayList<Partida>();
-            jugadores_sistema = new ArrayList<Jugador>();
             
-            arrayAuxiliarDeArraysCarga = new ArrayList<ArrayList<String>>();
+            inventarios_sistema = conn.getInventariosSQL();
             
-            
-            
+            jugadores_sistema = conn.getJugadoresSQL();
 
+            partidas_sistema = new ArrayList<Partida>();
             
-            
-            this.leerXML_inventario();
-            this.leerXML_jugador();
-            //this.leerXML_servidor();
-            this.leerXML_partida();
-            this.enlazarInventarioJugador();
     }
     
     public void cerrar_conexion (){
