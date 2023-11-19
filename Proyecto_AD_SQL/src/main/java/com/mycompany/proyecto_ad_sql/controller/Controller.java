@@ -250,10 +250,9 @@ public class Controller {
                 p.setUnJugador(getJugadorById(idj));
             }
         }
-
+        conn.InsertarPartidaSQL(p);
         partidas_sistema.add (p);
         
-        this.escribirXML_partida();
     }
     
     /**

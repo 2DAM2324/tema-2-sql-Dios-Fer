@@ -154,6 +154,65 @@ public class Conexion {
         
         
     }
+    
+    /**
+     * @brief Inserta una partida en la base de datos y actualiza su id en el sistema
+     * @param Partida p
+     * @post se actualizara la id y se añadira a la base de datos
+     */
+    public void InsertarPartidaSQL (Partida p){
+
+        String sent = "INSERT INTO partidas (num_Espectadores, id_servidor) VALUES (?, ?)";
+        PreparedStatement sentencia = null;
+        ResultSet generatedKeys = null;
+        int idGenerado = 0;
+
+        
+        try{
+            sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
+            
+            sentencia.setString(1, String.valueOf(p.getNumEspectadores()));
+            sentencia.setString(2, p.getServerPartida().getIdServer().substring(0, p.getServerPartida().getIdServer().length()));
+
+            sentencia.executeUpdate();
+            
+            generatedKeys = sentencia.getGeneratedKeys();
+            idGenerado = generatedKeys.getInt(1);
+            
+            p.setIdPartida("P-" + idGenerado);
+            
+            for (int num=0; num < p.getJugadores().size(); num++){
+                sent = "UPDATE jugadores SET id_partida = ? " + "WHERE id_jugador = ?";
+                sentencia = null;
+                
+                sentencia = conn.prepareStatement(sent);
+                
+                sentencia.setString(1, p.getIdPartida().substring(2, p.getIdPartida().length()));
+
+                //Id
+                sentencia.setString(2, p.getJugadores().get(num).getIdPlayer().substring(2, p.getJugadores().get(num).getIdPlayer().length()));
+                
+                sentencia.executeUpdate();
+
+            }
+            
+        }
+        catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+        finally{
+            try{
+                if (sentencia != null)
+                    sentencia.close();
+            }
+            catch(SQLException sqle2){
+                sqle2.printStackTrace();
+            }
+        }
+        
+        
+    }
+    
     /*////////////////////////////////////////////////////////
     ////////////////////    Modificar    ////////////////////
     //////////////////////////////////////////////////////*/
