@@ -254,6 +254,103 @@ public class Conexion {
     }
     
     
+    /**
+     * @brief Modifica una partida en la base de datos
+     * @param Partida p 
+     * @pre que este el objeto en la base de datos
+     * @post se modificara el objeto y la instancia en la base de datos
+     */
+    public void ModificarPartidaSQL (Partida p, int numEspectadores, String id_server, String[] idsjugadores){
+
+            String sentenciaSql = "";
+            PreparedStatement sentencia = null;
+            try {
+                /// num_Espectadores
+                sentenciaSql = "UPDATE partidas SET num_Espectadores = ? " + "WHERE id_partida = ?";
+                sentencia = null;
+                
+                sentencia = conn.prepareStatement(sentenciaSql);
+                
+                
+                sentencia.setString(1, String.valueOf(numEspectadores));
+                p.setNumEspectadores(numEspectadores);
+                sentencia.setString(2, p.getIdPartida().substring(2, p.getIdPartida().length()));
+                sentencia.executeUpdate();                
+                ///
+                
+                /// id_servidor
+                sentenciaSql = "UPDATE partidas SET id_servidor = ? " + "WHERE id_partida = ?";
+                sentencia = null;
+                
+                sentencia = conn.prepareStatement(sentenciaSql);
+                
+                
+                sentencia.setString(1, id_server.substring(2, id_server.length()));
+                p.setServerPartida(getServidorById(id_server));
+                sentencia.setString(2, p.getIdPartida().substring(2, p.getIdPartida().length()));
+                sentencia.executeUpdate();         
+                ///
+                
+                
+                //// Limpiar jugadores
+                for (int num=0; num < p.getJugadores().size(); num++){
+                    sentenciaSql = "UPDATE jugadores SET id_partida = ? " + "WHERE id_jugador = ?";
+                    sentencia = null;
+
+                    sentencia = conn.prepareStatement(sentenciaSql);
+
+                    sentencia.setString(1, null);
+
+                    //Id
+                    sentencia.setString(2, p.getJugadores().get(num).getIdPlayer().substring(2, p.getJugadores().get(num).getIdPlayer().length()));
+
+                    sentencia.executeUpdate();
+
+                }
+                ////
+                
+                //Actualizamos los jugadores del objeto
+                
+                p.getJugadores().clear();
+        
+                if (!idsjugadores[0].trim().equals("")){
+                    for (String idj : idsjugadores){
+                        p.setUnJugador(getJugadorById(idj));
+                    }
+                }
+
+                
+                //// Insertar nuevos jugadores
+                for (int num=0; num < p.getJugadores().size(); num++){
+                    sentenciaSql = "UPDATE jugadores SET id_partida = ? " + "WHERE id_jugador = ?";
+                    sentencia = null;
+
+                    sentencia = conn.prepareStatement(sentenciaSql);
+
+                    sentencia.setString(1, p.getIdPartida().substring(2, p.getIdPartida().length()));
+
+                    //Id
+                    sentencia.setString(2, p.getJugadores().get(num).getIdPlayer().substring(2, p.getJugadores().get(num).getIdPlayer().length()));
+
+                    sentencia.executeUpdate();
+
+                }
+                ////
+                
+
+                sentencia.executeUpdate();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } finally {
+                if (sentencia != null)
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+            }
+        
+    }
     
     /*////////////////////////////////////////////////////////
     /////////////////////    Eliminar    ////////////////////

@@ -268,16 +268,8 @@ public class Controller {
         int i=0;
         for (i=0; i<partidas_sistema.size() && !partidas_sistema.get(i).getIdPartida().equals(Id); i++){
         }
-        partidas_sistema.get(i).setNumEspectadores(numEspectadores);
-        partidas_sistema.get(i).setServerPartida(obtenerServidorId(id_server));
-        partidas_sistema.get(i).getJugadores().clear();
         
-        if (!idsjugadores[0].trim().equals("")){
-            for (String idj : idsjugadores){
-                partidas_sistema.get(i).setUnJugador(getJugadorById(idj));
-            }
-        }
-
+        conn.ModificarPartidaSQL(partidas_sistema.get(i), numEspectadores, id_server, idsjugadores);
         this.escribirXML_partida();
     }
     

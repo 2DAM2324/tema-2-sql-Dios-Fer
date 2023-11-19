@@ -2,18 +2,36 @@
 <xml>
   <Partidas>
     <Partida>
+      <IdPartida>P-1</IdPartida>
+      <NumEspectadores>5</NumEspectadores>
+      <IdServidorPartida>S-1</IdServidorPartida>
+      <Jugadores>
+        <IdJugador>J-1</IdJugador>
+        <IdJugador>J-3</IdJugador>
+        <IdJugador>J-4</IdJugador>
+      </Jugadores>
+    </Partida>
+    <Partida>
       <IdPartida>P-2</IdPartida>
       <NumEspectadores>20</NumEspectadores>
-      <IdServidorPartida>S-3</IdServidorPartida>
+      <IdServidorPartida>S-2</IdServidorPartida>
       <Jugadores>
-        <IdJugador>J-3</IdJugador>
+        <IdJugador>J-2</IdJugador>
       </Jugadores>
     </Partida>
     <Partida>
       <IdPartida>P-3</IdPartida>
       <NumEspectadores>0</NumEspectadores>
-      <IdServidorPartida>S-4</IdServidorPartida>
+      <IdServidorPartida>S-3</IdServidorPartida>
       <Jugadores/>
+    </Partida>
+    <Partida>
+      <IdPartida>P-4</IdPartida>
+      <NumEspectadores>8888</NumEspectadores>
+      <IdServidorPartida>S-5</IdServidorPartida>
+      <Jugadores>
+        <IdJugador>J-5</IdJugador>
+      </Jugadores>
     </Partida>
   </Partidas>
 </xml>
