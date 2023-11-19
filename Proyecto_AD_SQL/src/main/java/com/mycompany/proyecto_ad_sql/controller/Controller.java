@@ -113,8 +113,9 @@ public class Controller {
         int i=0;
         for (i=0; i<servidores_sistema.size() && !servidores_sistema.get(i).getIdServer().equals(Id); i++){
         }
+        conn.EliminarServidorSQL(Id);
         servidores_sistema.remove(i);
-        this.escribirXML_servidor();
+        
     }
     
     public ArrayList<Servidor> getServidores_sistema() {

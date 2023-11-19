@@ -114,9 +114,9 @@ public class Conexion {
     //////////////////////////////////////////////////////*/
     
     /**
-     * @brief 
-     * @pre 
-     * @post 
+     * @brief Inserta un servidor en la base de datos y actualiza su id en el sistema
+     * @param Servidor s
+     * @post se actualizara la id y se añadira a la base de datos
      */
     public void InsertarServidorSQL (Servidor s){
 
@@ -193,6 +193,39 @@ public class Conexion {
         
         
     }
+    
+    
+    
+    /*////////////////////////////////////////////////////////
+    /////////////////////    Eliminar    ////////////////////
+    //////////////////////////////////////////////////////*/
+    /**
+     * @brief Eliminara un servidor de la base de datos
+     * @param String id 
+     * @pre debe de existir el servidor en la base de datos
+     * @post se eliminara el servidor
+     */
+    public void EliminarServidorSQL (String id){
+    String sentenciaSql = "DELETE FROM servidores WHERE id_servidor = ?";
+    PreparedStatement sentencia = null;
+    try {
+        sentencia = conn.prepareStatement(sentenciaSql);
+        sentencia.setString(1, id.substring(2, id.length()));
+        sentencia.executeUpdate();
+    } catch (SQLException sqle) {
+        sqle.printStackTrace();
+    } finally {
+        if (sentencia != null)
+            try {
+                sentencia.close();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        }
+    }
+    
+    
+    
     
     /*////////////////////////////////////////////////////////
     //////////////////////    Cargas    /////////////////////
