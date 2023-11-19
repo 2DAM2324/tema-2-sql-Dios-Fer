@@ -172,7 +172,7 @@ public class Conexion {
             sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
             
             sentencia.setString(1, String.valueOf(p.getNumEspectadores()));
-            sentencia.setString(2, p.getServerPartida().getIdServer().substring(0, p.getServerPartida().getIdServer().length()));
+            sentencia.setString(2, p.getServerPartida().getIdServer().substring(2, p.getServerPartida().getIdServer().length()));
 
             sentencia.executeUpdate();
             
@@ -380,6 +380,56 @@ public class Conexion {
         }
     }
     
+    
+    /**
+     * @brief Eliminara una partida de la base de datos
+     * @param Partida p
+     * @pre debe de existir la partida en la base de datos
+     * @post se eliminara la partida
+     */
+    public void EliminarPartidaSQL (Partida p){
+    String sentenciaSql = "";
+    PreparedStatement sentencia = null;
+    try {
+        
+
+            //// Limpiar jugadores
+            for (int num=0; num < p.getJugadores().size(); num++){
+                sentenciaSql = "UPDATE jugadores SET id_partida = ? " + "WHERE id_jugador = ?";
+                sentencia = null;
+
+                sentencia = conn.prepareStatement(sentenciaSql);
+
+                sentencia.setString(1, null);
+
+                //Id
+                sentencia.setString(2, p.getJugadores().get(num).getIdPlayer().substring(2, p.getJugadores().get(num).getIdPlayer().length()));
+
+                sentencia.executeUpdate();
+
+            }
+
+            /// Eliminamos
+            sentenciaSql = "DELETE FROM partidas WHERE id_partida = ?";
+            sentencia = null;
+            
+            sentencia = conn.prepareStatement(sentenciaSql);
+            
+            sentencia.setString(1, p.getIdPartida().substring(2, p.getIdPartida().length()));
+
+            sentencia.executeUpdate();
+        
+    } catch (SQLException sqle) {
+        sqle.printStackTrace();
+    } finally {
+        if (sentencia != null)
+            try {
+                sentencia.close();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        }
+    }
     
     
     

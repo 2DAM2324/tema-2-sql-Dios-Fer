@@ -283,8 +283,9 @@ public class Controller {
         int i=0;
         for (i=0; i<partidas_sistema.size() && !partidas_sistema.get(i).getIdPartida().equals(Id); i++){
         }
+        conn.EliminarPartidaSQL(partidas_sistema.get(i));
         partidas_sistema.remove(i);
-        this.escribirXML_partida();
+        
     }
     
     public ArrayList<Partida> getPartidas_sistema() {

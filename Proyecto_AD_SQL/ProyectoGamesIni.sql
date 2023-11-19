@@ -72,7 +72,7 @@ INSERT INTO jugadores (nickName, nivel, id_partida) VALUES ('Fernando', '100', '
 INSERT INTO jugadores (nickName, nivel, id_partida) VALUES ('Juan', '50', '2');
 INSERT INTO jugadores (nickName, nivel, id_partida) VALUES ('DiosFer', '10', '1');
 INSERT INTO jugadores (nickName, nivel, id_partida) VALUES ('Fairy', '34', '1');
-INSERT INTO jugadores (nickName, nivel, id_partida) VALUES ('Malt', '43', 'NULL');
+INSERT INTO jugadores (nickName, nivel, id_partida) VALUES ('Malt', '43', null);
 
 
 INSERT INTO partidas (num_Espectadores, id_servidor) VALUES ('5', '1');
