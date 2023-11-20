@@ -275,6 +275,67 @@ public class Conexion {
         
     }
     
+    /**
+     * @brief Inserta un inventario en la base de datos y actualiza su id en el sistema, ademas de insertar su relacion
+     * @param InventarioCompartido i
+     * @post se actualizara la id y se añadira a la base de datos
+     */
+    public void InsertarInventarioSQL (InventarioCompartido i){
+
+        String sent = "INSERT INTO inventarios (slotsOcupados, slotsMaximos) VALUES (?, ?)";
+        PreparedStatement sentencia = null;
+        ResultSet generatedKeys = null;
+        int idGenerado = 0;
+
+        
+        try{
+            sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
+            
+            sentencia.setString(1, String.valueOf(i.getSlotsOcupados()));
+            sentencia.setString(2, String.valueOf(i.getSlotsMaximos()));
+
+            sentencia.executeUpdate();
+
+            generatedKeys = sentencia.getGeneratedKeys();
+            idGenerado = generatedKeys.getInt(1);
+            
+            i.setIdInventario("I-" + idGenerado);
+            
+
+            for (int num=0; num < i.getJugadores().size(); num++){
+            
+                sent = "INSERT INTO accesos (id_jugador, id_inventario) VALUES (?, ?)";
+                sentencia = null;
+                
+                sentencia = conn.prepareStatement(sent);
+                
+                sentencia.setString(2, i.getIdInventario().substring(2, i.getIdInventario().length()));
+
+                
+                sentencia.setString(1, i.getJugadores().get(num).getIdPlayer().substring(2, i.getJugadores().get(num).getIdPlayer().length()));
+                
+                sentencia.executeUpdate();
+
+            }
+
+            
+        }
+        catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+        finally{
+            try{
+                if (sentencia != null)
+                    sentencia.close();
+            }
+            catch(SQLException sqle2){
+                sqle2.printStackTrace();
+            }
+        }
+        
+        
+    }
+    
     /*////////////////////////////////////////////////////////
     ////////////////////    Modificar    ////////////////////
     //////////////////////////////////////////////////////*/

@@ -146,10 +146,7 @@ public class Controller {
         }
         
         inventarios_sistema.add (inv);
-        
-        
-        this.escribirXML_inventario();
-        this.escribirXML_jugador();
+        conn.InsertarInventarioSQL(inv);
     }
     
     /**
