@@ -21,19 +21,12 @@ public class Partida {
     int NumEspectadores;
     Servidor ServerPartida;
     ArrayList<Jugador> jugadores; 
-    private static int PartidasActuales=0; //generacion de id
 
     /********************************
      *******   Constructor   ********
      ********************************/
     
-    public Partida() {
-        PartidasActuales++;
-        setIdPartida ("P-" + PartidasActuales);
-        setNumEspectadores (0);
-        
-        setJugadores (new ArrayList<Jugador>());
-    }
+    
     
     /**
      * @brief Constructor de Partida con id existente (constructor de carga)
@@ -49,10 +42,7 @@ public class Partida {
         setServerPartida (s);
         setJugadores (new ArrayList<Jugador>());
         
-        //actualizacion de PartidasActuales en carga de datos
-        if ((Integer.parseInt(Id.substring(2))) > this.getPartidasActuales()){
-            setPartidasActuales((Integer.parseInt(Id.substring(2))));
-        }
+        
     }
     
     /**
@@ -65,8 +55,7 @@ public class Partida {
      */
     public Partida(int NumEspectadores, Servidor s) {
 
-        PartidasActuales++;
-        setIdPartida("P-" + PartidasActuales);
+        setIdPartida("");
 
         setNumEspectadores (NumEspectadores);
         setServerPartida (s);
@@ -99,9 +88,7 @@ public class Partida {
         this.jugadores.add(j);
     }
 
-    public void setPartidasActuales(int partidasActuales) {
-        this.PartidasActuales=partidasActuales;
-    }
+
     
     /********************************
      **********   Get's   ***********
@@ -127,8 +114,6 @@ public class Partida {
         return this.jugadores;
     }
     
-    public int getPartidasActuales() {
-        return PartidasActuales;
-    }
+
     
 }

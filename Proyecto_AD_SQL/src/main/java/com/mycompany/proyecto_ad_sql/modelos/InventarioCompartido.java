@@ -21,20 +21,12 @@ public class InventarioCompartido {
     private int SlotsMaximos;
     private int SlotsOcupados;
     ArrayList<Jugador> jugadoresAccesoInventario;
-    private static int InventariosActuales=0; //generacion de id
 
     /********************************
      *******   Constructor   ********
      ********************************/
     
-    public InventarioCompartido() {
-        InventariosActuales++;
-        setIdInventario ("I-" + InventariosActuales);
-        setSlotsMaximos(0);
-        setSlotsOcupados(0);
-        jugadoresAccesoInventario = new ArrayList<Jugador>();
-        
-    }
+
     
     /**
      * @brief Constructor de Inventario con id existente (constructor de carga)
@@ -48,10 +40,7 @@ public class InventarioCompartido {
         setSlotsMaximos(SlotsMaximos);
         setSlotsOcupados(SlotsOcupados);
         jugadoresAccesoInventario = new ArrayList<Jugador>();
-        //actualizacion de InventariosActuales en carga de datos
-        if ((Integer.parseInt(Id.substring(2))) > this.getInventariosActuales()){
-            setInventariosActuales((Integer.parseInt(Id.substring(2))));
-        }
+
         
     }
     
@@ -63,8 +52,8 @@ public class InventarioCompartido {
      * @param int SlotsOcupados
      */
     public InventarioCompartido(int SlotsMaximos, int SlotsOcupados) {
-        InventariosActuales++;
-        setIdInventario ("I-" + InventariosActuales);
+
+        setIdInventario ("");
         setSlotsMaximos(SlotsMaximos);
         setSlotsOcupados(SlotsOcupados);
         jugadoresAccesoInventario = new ArrayList<Jugador>();
@@ -91,9 +80,7 @@ public class InventarioCompartido {
         this.SlotsOcupados = SlotsOcupados;
     }
     
-    public void setInventariosActuales (int InventariosActuales){
-        this.InventariosActuales=InventariosActuales;
-    }
+
 
     /********************************
      **********   Get's   ***********
@@ -111,9 +98,7 @@ public class InventarioCompartido {
         return SlotsOcupados;
     }
     
-    public int getInventariosActuales (){
-        return this.InventariosActuales;
-    }
+
     
     public Jugador getJugadorConAcceso (int pos){
         return jugadoresAccesoInventario.get (pos);

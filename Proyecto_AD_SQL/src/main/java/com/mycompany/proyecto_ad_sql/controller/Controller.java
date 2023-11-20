@@ -164,30 +164,8 @@ public class Controller {
         
         for (i=0; i<inventarios_sistema.size() && !inventarios_sistema.get(i).getIdInventario().equals(Id); i++){
         }
-        
         inv=inventarios_sistema.get(i);
-        inv.setSlotsMaximos(slotsMaximos);
-        inv.setSlotsOcupados(slotsOcupados);
-        
-        
-        //retiramos el acceso de todos los jugadores al inventario
-        for (Jugador jug : inv.getJugadores()){
-            jug.removerInventario(inv.getIdInventario());
-        }
-        
-        //limpiamos los jugadores del inventario
-        inv.getJugadores().clear();
-        
-        //Establecemos los nuevos jugadores
-        if (!idsJugadorInventarios[0].trim().equals("")){
-            for (String idJ : idsJugadorInventarios){
-                inv.setJugadorConAcceso(getJugadorById(idJ));
-                getJugadorById(idJ).setInventarioConAcceso(inv);
-            }
-        }
-        
-        this.escribirXML_inventario();
-        this.escribirXML_jugador();
+        conn.ModificarInventarioSQL(inv, slotsMaximos, slotsOcupados, idsJugadorInventarios);
 
 
     }
@@ -430,26 +408,6 @@ public class Controller {
         for (i=0; i<jugadores_sistema.size() && !jugadores_sistema.get(i).getIdPlayer().equals(Id); i++){
         }
         j=jugadores_sistema.get(i);
-        /*
-        j.setNickName(NickName);
-        j.setNivel(nivel);
-        
-        //retiramos el acceso de todos los inventarios del jugador
-        for (InventarioCompartido inv : j.getInventarios()){
-            inv.removerAcceso(j.getIdPlayer());
-        }
-        
-        //limpiamos los inventarios del jugador
-        j.getInventarios().clear();
-        
-        //Establecemos los nuevos inventarios
-        if (!idsInventariosJugador[0].trim().equals("")){
-            for (String idI : idsInventariosJugador){
-                j.setInventarioConAcceso(getInventarioById(idI));
-                getInventarioById(idI).setJugadorConAcceso(j);
-            }
-        }
-        */
         conn.ModificarJugadorSQL(j, NickName, nivel, idsInventariosJugador);
     }
     

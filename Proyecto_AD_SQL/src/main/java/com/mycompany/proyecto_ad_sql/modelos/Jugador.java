@@ -20,22 +20,13 @@ public class Jugador {
     private String IdPlayer;  //genearda automaticamente o cargada
     private String NickName; 
     private int nivel; 
-    private static int JugadoresActuales=0;  //generacion de id
     ArrayList<InventarioCompartido> inventariosConAcceso;
     
     /********************************
      *******   Constructor   ********
      ********************************/
     
-    
-    public Jugador() {
-        JugadoresActuales++;
-        setIdPlayer("J-" + JugadoresActuales);
-        setNickName ("");
-        setNivel (0);
-        inventariosConAcceso = new ArrayList<InventarioCompartido>();
-    }
-    
+
     /**
      * @brief Constructor de Jugador con id existente (constructor de carga)
      * @post se actualizara la variable utilizada para la generacion de los id
@@ -49,10 +40,6 @@ public class Jugador {
         setNivel (nivel);
         inventariosConAcceso = new ArrayList<InventarioCompartido>();
         
-        //actualizacion de JugadoresActuales en carga de datos
-        if ((Integer.parseInt(Id.substring(2))) > this.getJugadoresActuales()){
-            setJugadoresActuales((Integer.parseInt(Id.substring(2))));
-        }
         
     }
     
@@ -64,8 +51,8 @@ public class Jugador {
      * @param int nivel
      */
     public Jugador(String NickName, int nivel) {
-        JugadoresActuales++;
-        setIdPlayer("J-" + JugadoresActuales);
+        
+        setIdPlayer("");
         setNickName (NickName);
         setNivel (nivel);
         inventariosConAcceso = new ArrayList<InventarioCompartido>();
@@ -89,9 +76,7 @@ public class Jugador {
         this.nivel = nivel;
     }
     
-    public void setJugadoresActuales(int n) {
-        this.JugadoresActuales = n;
-    }
+    
     
     public void setInventarioConAcceso (InventarioCompartido i){
         inventariosConAcceso.add (i);
@@ -113,9 +98,7 @@ public class Jugador {
         return nivel;
     }
     
-    public int getJugadoresActuales (){
-        return this.JugadoresActuales;
-    }
+
     
     public InventarioCompartido getInventarioConAcceso (int pos){
         return inventariosConAcceso.get (pos);

@@ -343,6 +343,7 @@ public class Conexion {
     /**
      * @brief Modifica un servidor en la base de datos
      * @param Servidor s 
+     * @param String region
      * @pre que este el objeto en la base de datos
      * @post se modificara el objeto y la instancia en la base de datos
      */
@@ -380,6 +381,9 @@ public class Conexion {
     /**
      * @brief Modifica una partida en la base de datos
      * @param Partida p 
+     * @param int numEspectadores
+     * @param String id_server
+     * @param String[] idsjugadores
      * @pre que este el objeto en la base de datos
      * @post se modificara el objeto y la instancia en la base de datos
      */
@@ -476,8 +480,11 @@ public class Conexion {
     }
     
     /**
-     * @brief Modifica una partida en la base de datos
-     * @param Partida p 
+     * @brief Modifica un jugador en la base de datos
+     * @param Jugador j
+     * @param String NickName
+     * @param int nivel
+     * @param String [] idsInventariosJugador
      * @pre que este el objeto en la base de datos
      * @post se modificara el objeto y la instancia en la base de datos
      */
@@ -520,7 +527,11 @@ public class Conexion {
                 sentencia.setString(1, j.getIdPlayer().substring(2, j.getIdPlayer().length()));
                 sentencia.executeUpdate();
                 
-
+                //retiramos el acceso de todos los jugadores al inventario
+                for (InventarioCompartido inv : j.getInventarios()){
+                    inv.removerAcceso(j.getIdPlayer());
+                }
+                
                 //limpiamos los inventarios del jugador
                 j.getInventarios().clear();
 
@@ -549,6 +560,102 @@ public class Conexion {
                     sentencia.executeUpdate();
 
                 }
+                
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            } finally {
+                if (sentencia != null)
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+            }
+        
+    }
+    
+    
+    /**
+     * @brief Modifica un inventario en la base de datos
+     * @param InventarioCompartido inv
+     * @param int slotsMaximos
+     * @param int slotsOcupados
+     * @param String[] idsJugadorInventarios
+     * @pre que este el objeto en la base de datos
+     * @post se modificara el objeto y la instancia en la base de datos
+     */
+    public void ModificarInventarioSQL (InventarioCompartido inv, int slotsMaximos, int slotsOcupados, String[] idsJugadorInventarios){
+
+            String sentenciaSql = "";
+            PreparedStatement sentencia = null;
+            try {
+                
+                sentenciaSql = "UPDATE inventarios SET slotsOcupados = ? " + "WHERE id_inventario = ?";
+                sentencia = null;
+                
+                sentencia = conn.prepareStatement(sentenciaSql);
+                
+                
+                sentencia.setString(1, String.valueOf(slotsOcupados));
+                inv.setSlotsOcupados(slotsOcupados);
+                sentencia.setString(2, inv.getIdInventario().substring(2, inv.getIdInventario().length()));
+                sentencia.executeUpdate();                
+                ///
+                
+                /// 
+                sentenciaSql = "UPDATE inventarios SET slotsMaximos = ? " + "WHERE id_inventario = ?";
+                sentencia = null;
+                
+                sentencia = conn.prepareStatement(sentenciaSql);
+                
+                
+                sentencia.setString(1, String.valueOf(slotsMaximos));
+                inv.setSlotsOcupados(slotsMaximos);
+                sentencia.setString(2, inv.getIdInventario().substring(2, inv.getIdInventario().length()));
+                sentencia.executeUpdate(); 
+                ///
+                
+                //// Limpiar los accesos del inventario
+                sentenciaSql = "DELETE FROM accesos WHERE id_inventario = ?";
+                sentencia = null;
+                sentencia = conn.prepareStatement(sentenciaSql);
+
+                sentencia.setString(1, inv.getIdInventario().substring(2, inv.getIdInventario().length()));
+                sentencia.executeUpdate();
+                
+                //retiramos el acceso de todos los jugadores al inventario
+                for (Jugador jug : inv.getJugadores()){
+                    jug.removerInventario(inv.getIdInventario());
+                }
+        
+                //limpiamos los inventarios del jugador
+                inv.getJugadores().clear();
+
+                //Establecemos los nuevos inventarios
+                if (!idsJugadorInventarios[0].trim().equals("")){
+                    for (String idJ : idsJugadorInventarios){
+                        inv.setJugadorConAcceso(getJugadorById(idJ));
+                        getJugadorById(idJ).setInventarioConAcceso(inv);
+                    }
+                }
+                
+                
+                //// 
+                for (int num=0; num < inv.getJugadores().size(); num++){
+            
+                sentenciaSql = "INSERT INTO accesos (id_jugador, id_inventario) VALUES (?, ?)";
+                sentencia = null;
+                
+                sentencia = conn.prepareStatement(sentenciaSql);
+                
+                sentencia.setString(2, inv.getIdInventario().substring(2, inv.getIdInventario().length()));
+
+                
+                sentencia.setString(1, inv.getJugadores().get(num).getIdPlayer().substring(2, inv.getJugadores().get(num).getIdPlayer().length()));
+                
+                sentencia.executeUpdate();
+
+            }
                 
             } catch (SQLException sqle) {
                 sqle.printStackTrace();
