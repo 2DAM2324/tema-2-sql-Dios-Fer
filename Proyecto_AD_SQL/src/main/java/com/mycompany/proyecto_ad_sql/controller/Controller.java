@@ -430,6 +430,7 @@ public class Controller {
         for (i=0; i<jugadores_sistema.size() && !jugadores_sistema.get(i).getIdPlayer().equals(Id); i++){
         }
         j=jugadores_sistema.get(i);
+        /*
         j.setNickName(NickName);
         j.setNivel(nivel);
         
@@ -448,9 +449,8 @@ public class Controller {
                 getInventarioById(idI).setJugadorConAcceso(j);
             }
         }
-        
-        this.escribirXML_jugador();
-        this.escribirXML_inventario();
+        */
+        conn.ModificarJugadorSQL(j, NickName, nivel, idsInventariosJugador);
     }
     
     /**
