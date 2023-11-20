@@ -213,6 +213,68 @@ public class Conexion {
         
     }
     
+    /**
+     * @brief Inserta un jugador en la base de datos y actualiza su id en el sistema, ademas de insertar su relacion
+     * @param Jugador j
+     * @post se actualizara la id y se añadira a la base de datos
+     */
+    public void InsertarJugadorSQL (Jugador j){
+
+        String sent = "INSERT INTO jugadores (nickName, nivel, id_partida) VALUES (?, ?, ?)";
+        PreparedStatement sentencia = null;
+        ResultSet generatedKeys = null;
+        int idGenerado = 0;
+
+        
+        try{
+            sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
+            
+            sentencia.setString(1, j.getNickName());
+            sentencia.setString(2, String.valueOf(j.getNivel()));
+            sentencia.setString(3, "null");
+
+            sentencia.executeUpdate();
+
+            generatedKeys = sentencia.getGeneratedKeys();
+            idGenerado = generatedKeys.getInt(1);
+            
+            j.setIdPlayer("J-" + idGenerado);
+            
+
+            for (int num=0; num < j.getInventarios().size(); num++){
+            
+                sent = "INSERT INTO accesos (id_jugador, id_inventario) VALUES (?, ?)";
+                sentencia = null;
+                
+                sentencia = conn.prepareStatement(sent);
+                
+                sentencia.setString(1, j.getIdPlayer().substring(2, j.getIdPlayer().length()));
+
+                //Id
+                sentencia.setString(2, j.getInventarios().get(num).getIdInventario().substring(2, j.getInventarios().get(num).getIdInventario().length()));
+                
+                sentencia.executeUpdate();
+
+            }
+
+            
+        }
+        catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+        finally{
+            try{
+                if (sentencia != null)
+                    sentencia.close();
+            }
+            catch(SQLException sqle2){
+                sqle2.printStackTrace();
+            }
+        }
+        
+        
+    }
+    
     /*////////////////////////////////////////////////////////
     ////////////////////    Modificar    ////////////////////
     //////////////////////////////////////////////////////*/

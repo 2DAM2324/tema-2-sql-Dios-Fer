@@ -415,8 +415,7 @@ public class Controller {
 
         jugadores_sistema.add (j);
         
-        this.escribirXML_jugador();
-        this.escribirXML_inventario();
+        conn.InsertarJugadorSQL(j);
     }
     
     /**
