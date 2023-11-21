@@ -750,6 +750,95 @@ public class Conexion {
     
     
     
+    /**
+     * @brief Eliminara un jugador de la base de datos
+     * @param Jugador j
+     * @pre debe de existir la partida en la base de datos, el jugador debe de no estar en una partida
+     * @post se eliminara el jugador
+     */
+    public void EliminarJugadorSQL (Jugador j){
+    String sentenciaSql = "";
+    PreparedStatement sentencia = null;
+    try {
+            //retiramos el acceso de todos los inventarios del jugador
+            for (InventarioCompartido inv : j.getInventarios()){
+                inv.removerAcceso(j.getIdPlayer());
+            }
+
+            //// Limpiar inventarios del jugador
+            sentenciaSql = "DELETE FROM accesos WHERE id_jugador = ?";
+            sentencia = null;
+            sentencia = conn.prepareStatement(sentenciaSql);
+
+            sentencia.setString(1, j.getIdPlayer().substring(2, j.getIdPlayer().length()));
+            sentencia.executeUpdate();
+
+            /// Eliminamos
+            sentenciaSql = "DELETE FROM jugadores WHERE id_jugador = ?";
+            sentencia = null;
+            
+            sentencia = conn.prepareStatement(sentenciaSql);
+            
+            sentencia.setString(1, j.getIdPlayer().substring(2, j.getIdPlayer().length()));
+
+            sentencia.executeUpdate();
+        
+    } catch (SQLException sqle) {
+        sqle.printStackTrace();
+    } finally {
+        if (sentencia != null)
+            try {
+                sentencia.close();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        }
+    }
+    
+    
+    /**
+     * @brief Eliminara un inventario de la base de datos
+     * @param InventarioCompartido i
+     * @pre debe de existir el inventario en la base de datos, debe de no tener jugadores con acceso
+     * @post se eliminara el inventario
+     */
+    public void EliminarInventarioSQL (InventarioCompartido i){
+    String sentenciaSql = "";
+    PreparedStatement sentencia = null;
+    try {
+        
+
+            //// Limpiar jugadores del imnventario // NO debreia de hacer falta por los filtros el contexto pero pongamoslo por si acaso
+            sentenciaSql = "DELETE FROM accesos WHERE id_inventario = ?";
+            sentencia = null;
+            sentencia = conn.prepareStatement(sentenciaSql);
+
+            sentencia.setString(1, i.getIdInventario().substring(2, i.getIdInventario().length()));
+            sentencia.executeUpdate();
+
+            /// Eliminamos
+            sentenciaSql = "DELETE FROM inventarios WHERE id_inventario = ?";
+            sentencia = null;
+            
+            sentencia = conn.prepareStatement(sentenciaSql);
+            
+            sentencia.setString(1, i.getIdInventario().substring(2, i.getIdInventario().length()));
+
+            sentencia.executeUpdate();
+        
+    } catch (SQLException sqle) {
+        sqle.printStackTrace();
+    } finally {
+        if (sentencia != null)
+            try {
+                sentencia.close();
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
+        }
+    }
+    
+    
     /*////////////////////////////////////////////////////////
     //////////////////////    Cargas    /////////////////////
     //////////////////////////////////////////////////////*/
