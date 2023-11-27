@@ -29,13 +29,17 @@ public class Conexion {
     private ArrayList<Jugador> jugadores_conexion;
     
     private static Connection conn = null;
-
+    
+    private String dbName;
     
     /*////////////////////////////////////////////////////////
     ////////////////////    Costructor    ///////////////////
     //////////////////////////////////////////////////////*/
     
-    public Conexion (){
+    public Conexion (String NewdbName){
+        
+        this.dbName=NewdbName;
+        
         this.getConection();
         
         servidores_conexion = new ArrayList<Servidor>();
@@ -48,6 +52,7 @@ public class Conexion {
         this.CargarJugadoresSQL();
         this.cagarRelacionJI();
         this.CargarPartidasSQL();
+        
     }
 
     
@@ -82,7 +87,7 @@ public class Conexion {
      */
     private void abrirConexion (){
         try {
-            String url = "jdbc:sqlite:ProyectoGames.db";
+            String url = "jdbc:sqlite:" + dbName;
             conn = DriverManager.getConnection(url);
             System.out.println("Conexion iniciada correctamente");
         } catch (SQLException e) {

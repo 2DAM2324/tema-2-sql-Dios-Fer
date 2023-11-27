@@ -72,7 +72,7 @@ public class Ventana1 extends javax.swing.JFrame {
      */
     public Ventana1() throws IOException, FileNotFoundException, ClassNotFoundException, NotSerializableException, SAXException {
         initComponents();
-        controller=new Controller();
+        controller=new Controller("ProyectoGames.db");
         
         IdServerSeleccionado="";
         IdInventarioSeleccionado="";

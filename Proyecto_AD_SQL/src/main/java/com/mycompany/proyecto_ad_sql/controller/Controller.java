@@ -22,16 +22,13 @@ public class Controller {
     private ArrayList<Partida> partidas_sistema;
     private ArrayList<Jugador> jugadores_sistema;
 
-    private ArrayList<ArrayList<String>> arrayAuxiliarDeArraysCarga; // Para la carrga de inventarios (parcial)
-    
-    
     
      /**
      * @brief Constructor del controlador con la lectura inicial de la base de datos
      */
-    public Controller () {
+    public Controller (String dbName) {
             
-            conn = new Conexion();
+            conn = new Conexion(dbName);
             
             servidores_sistema = conn.getServidoresSQL();
             
