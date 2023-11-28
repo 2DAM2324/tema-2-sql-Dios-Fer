@@ -431,6 +431,11 @@ public class Controller {
         }
         return existe;
     }
+    
+    
+    public Conexion getconn (){
+        return this.conn;
+    }
 
     
 }

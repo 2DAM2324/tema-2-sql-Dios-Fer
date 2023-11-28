@@ -87,9 +87,9 @@ public class Conexion {
      */
     private void abrirConexion (){
         try {
-            String url = "jdbc:sqlite:" + dbName;
+            String url = "jdbc:sqlite:" + dbName + "?foreign_keys=true";
             conn = DriverManager.getConnection(url);
-            System.out.println("Conexion iniciada correctamente");
+            //System.out.println("Conexion iniciada correctamente");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } 
@@ -106,7 +106,7 @@ public class Conexion {
         try {
             conn.close();
             conn = null;
-            System.out.println("Conexion cerrada correctamente");
+            //System.out.println("Conexion cerrada correctamente");
         } 
         catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -1173,6 +1173,52 @@ public class Conexion {
      */
     public ArrayList<Partida> getPartidasSQL (){
         return partidas_conexion;
+    }
+    
+    /**
+     * @brief obtiene un servidor de la base de datos 
+     * @param String id
+     * @return Servidor s
+     */
+    public Servidor getServidorSQLByID (String idS){
+        String cons = "SELECT * FROM servidores WHERE id_servidor = ?";
+        PreparedStatement consulta = null;
+        ResultSet resultado = null;
+        Servidor s=null;
+        int id = Integer.valueOf( idS.substring(2, idS.length()));
+        
+        try{                                
+                                
+            consulta = this.getConection().prepareStatement(cons);
+
+            consulta.setString(1, String.valueOf(id));
+            
+            resultado = consulta.executeQuery();
+            while(resultado.next()){
+
+                s = new Servidor ("S-"+resultado.getString(1).toString(), resultado.getString(2));
+                
+                
+            }
+        }
+        catch(SQLException sqle){
+            sqle.printStackTrace();
+        }
+        finally{
+            if (consulta != null){
+                try{
+                   consulta.close();
+                    resultado.close(); 
+                }
+                catch(SQLException sqle2){
+                    sqle2.printStackTrace();
+                }
+                
+            }
+        }
+        return s;
+        
+        
     }
 }
 

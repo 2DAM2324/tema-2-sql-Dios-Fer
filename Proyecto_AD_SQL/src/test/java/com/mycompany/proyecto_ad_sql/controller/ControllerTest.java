@@ -20,11 +20,23 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ControllerTest {
     
     
-    private Controller instance;
+    private static Controller instance;
     
+    
+    
+    
+    ///////////
+    
+    private static String idServerCreadoPrueba1;
+    
+    private static Servidor sIniPreModPrueba2;
+    
+    //////////
     
     public ControllerTest() {
         instance = new Controller("ProyectoGamesTest.db");
+        
+        idServerCreadoPrueba1 = "";
     }
     
     @BeforeAll
@@ -35,7 +47,16 @@ public class ControllerTest {
     public static void tearDownClass() {
         //TODO borrar todo lo insertado y modificado
         
-        //instance.EliminarServidor(instance.getServidores_sistema().get(instance.getServidores_sistema().size()-1).getIdServer());
+        //Eliminar cambios Prueba1
+        if (!idServerCreadoPrueba1.equals("")){
+            instance.EliminarServidor(idServerCreadoPrueba1);
+        }
+        
+        //Eliminar cambios Prueba2
+        if (sIniPreModPrueba2!=null){
+            instance.ModificarServidor(sIniPreModPrueba2.getIdServer(), sIniPreModPrueba2.getRegion());
+        }
+        
     }
     
     @BeforeEach
@@ -48,9 +69,10 @@ public class ControllerTest {
 
 
     /**
+     * Prueba 1
      * Test of crearServidor method, of class Controller.
      */
-    @Test
+    @Test 
     public void testCrearServidor() {
         int numServers = instance.getServidores_sistema().size()-1;
         Boolean condicion=true;
@@ -75,6 +97,7 @@ public class ControllerTest {
                 //SI pasa el test
                 condicion=true;
                 assertEquals(true, condicion);
+                idServerCreadoPrueba1 = instance.getServidores_sistema().get(instance.getServidores_sistema().size()-1).getIdServer();
 
             }
         }
@@ -86,19 +109,38 @@ public class ControllerTest {
             
         }
         
-        //TODO duda
-        //Eliminamos el que acabamos de crear
-        instance.EliminarServidor(instance.getServidores_sistema().get(instance.getServidores_sistema().size()-1).getIdServer());
         
     }
 
     /**
+     * Prueba2
      * Test of ModificarServidor method, of class Controller.
      */
     @Test
     public void testModificarServidor() {
+        Boolean condicion = true; 
+        Servidor sIni = instance.getServidores_sistema().get(0);
+        Servidor sMod = null;
+
+        String regionMod = "Granada";
+        String idIni = instance.getServidores_sistema().get(0).getIdServer();
+
+        instance.ModificarServidor(idIni, regionMod);
+
+        sMod = instance.getconn().getServidorSQLByID(idIni);
         
+        if (sMod.equals(null)){
+            condicion=false;
+        }
+        if (!sMod.getRegion().equals(regionMod)){
+            condicion=false;
+        }
+        
+        assertEquals(true, condicion);
+        sIniPreModPrueba2 = sIni;
     }
+        
+    
 
     /**
      * Test of EliminarServidor method, of class Controller.
