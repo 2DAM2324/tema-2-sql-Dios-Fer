@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,7 +39,7 @@ public class Conexion {
     ////////////////////    Costructor    ///////////////////
     //////////////////////////////////////////////////////*/
     
-    public Conexion (String NewdbName){
+    public Conexion (String NewdbName) throws SQLException{
         
         this.dbName=NewdbName;
         
@@ -66,7 +69,7 @@ public class Conexion {
      * @post 
      * @param 
      */
-    public Connection getConection (){
+    public Connection getConection () throws SQLException{
         
         if (conn==null){
             this.abrirConexion();
@@ -85,13 +88,14 @@ public class Conexion {
      * @post se abrira una conexion 
      * @param 
      */
-    private void abrirConexion (){
+    private void abrirConexion () throws SQLException{
         try {
             String url = "jdbc:sqlite:" + dbName + "?foreign_keys=true";
             conn = DriverManager.getConnection(url);
             //System.out.println("Conexion iniciada correctamente");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
+            throw e;
         } 
     }
     
@@ -102,14 +106,14 @@ public class Conexion {
      * @post se cerrara la conexion
      * @param 
      */
-    public void cerrarConexion (){
+    public void cerrarConexion () throws SQLException{
         try {
             conn.close();
             conn = null;
             //System.out.println("Conexion cerrada correctamente");
         } 
         catch (SQLException sqle) {
-            sqle.printStackTrace();
+            throw sqle;
         }
     }
     
@@ -123,8 +127,8 @@ public class Conexion {
      * @param Servidor s
      * @post se actualizara la id y se añadira a la base de datos
      */
-    public void InsertarServidorSQL (Servidor s){
-
+    public void InsertarServidorSQL (Servidor s) throws SQLException{
+        
         String sent = "INSERT INTO servidores (region) VALUES (?)";
         PreparedStatement sentencia = null;
         ResultSet generatedKeys = null;
@@ -132,6 +136,9 @@ public class Conexion {
 
         
         try{
+            
+            conn.setAutoCommit(false);
+            
             sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
             
             sentencia.setString(1, s.getRegion());
@@ -145,15 +152,19 @@ public class Conexion {
             
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             try{
                 if (sentencia != null)
                     sentencia.close();
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
             }
             catch(SQLException sqle2){
-                sqle2.printStackTrace();
+                throw sqle2;
             }
         }
         
@@ -165,8 +176,10 @@ public class Conexion {
      * @param Partida p
      * @post se actualizara la id y se añadira a la base de datos
      */
-    public void InsertarPartidaSQL (Partida p){
+    public void InsertarPartidaSQL (Partida p) throws SQLException{
 
+        
+        
         String sent = "INSERT INTO partidas (num_Espectadores, id_servidor) VALUES (?, ?)";
         PreparedStatement sentencia = null;
         ResultSet generatedKeys = null;
@@ -174,6 +187,8 @@ public class Conexion {
 
         
         try{
+            conn.setAutoCommit(false);
+            
             sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
             
             sentencia.setString(1, String.valueOf(p.getNumEspectadores()));
@@ -203,15 +218,19 @@ public class Conexion {
             
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             try{
                 if (sentencia != null)
                     sentencia.close();
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
             }
             catch(SQLException sqle2){
-                sqle2.printStackTrace();
+                throw sqle2;
             }
         }
         
@@ -223,7 +242,7 @@ public class Conexion {
      * @param Jugador j
      * @post se actualizara la id y se añadira a la base de datos
      */
-    public void InsertarJugadorSQL (Jugador j){
+    public void InsertarJugadorSQL (Jugador j) throws SQLException{
 
         String sent = "INSERT INTO jugadores (nickName, nivel, id_partida) VALUES (?, ?, ?)";
         PreparedStatement sentencia = null;
@@ -232,6 +251,9 @@ public class Conexion {
 
         
         try{
+            
+            conn.setAutoCommit(false);
+            
             sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
             
             sentencia.setString(1, j.getNickName());
@@ -265,15 +287,19 @@ public class Conexion {
             
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             try{
                 if (sentencia != null)
                     sentencia.close();
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
             }
             catch(SQLException sqle2){
-                sqle2.printStackTrace();
+                throw sqle2;
             }
         }
         
@@ -285,7 +311,7 @@ public class Conexion {
      * @param InventarioCompartido i
      * @post se actualizara la id y se añadira a la base de datos
      */
-    public void InsertarInventarioSQL (InventarioCompartido i){
+    public void InsertarInventarioSQL (InventarioCompartido i) throws SQLException{
 
         String sent = "INSERT INTO inventarios (slotsOcupados, slotsMaximos) VALUES (?, ?)";
         PreparedStatement sentencia = null;
@@ -294,6 +320,9 @@ public class Conexion {
 
         
         try{
+            
+            conn.setAutoCommit(false);
+            
             sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
             
             sentencia.setString(1, String.valueOf(i.getSlotsOcupados()));
@@ -326,15 +355,19 @@ public class Conexion {
             
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             try{
                 if (sentencia != null)
                     sentencia.close();
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
             }
             catch(SQLException sqle2){
-                sqle2.printStackTrace();
+                throw sqle2;
             }
         }
         
@@ -352,11 +385,14 @@ public class Conexion {
      * @pre que este el objeto en la base de datos
      * @post se modificara el objeto y la instancia en la base de datos
      */
-    public void ModificarServidorSQL (Servidor s, String region){
+    public void ModificarServidorSQL (Servidor s, String region) throws SQLException{
 
             String sentenciaSql = "UPDATE servidores SET region = ? " + "WHERE id_servidor = ?";
             PreparedStatement sentencia = null;
             try {
+                
+                conn.setAutoCommit(false);
+            
                 sentencia = conn.prepareStatement(sentenciaSql);
                 
                 //cambios
@@ -369,13 +405,17 @@ public class Conexion {
                 
                 sentencia.executeUpdate();
             } catch (SQLException sqle) {
-                sqle.printStackTrace();
+                conn.rollback();
+                throw sqle;
+                
             } finally {
                 if (sentencia != null)
                 try {
                     sentencia.close();
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 } catch (SQLException sqle) {
-                    sqle.printStackTrace();
+                    throw sqle;
                 }
             }
         
@@ -392,11 +432,14 @@ public class Conexion {
      * @pre que este el objeto en la base de datos
      * @post se modificara el objeto y la instancia en la base de datos
      */
-    public void ModificarPartidaSQL (Partida p, int numEspectadores, String id_server, String[] idsjugadores){
+    public void ModificarPartidaSQL (Partida p, int numEspectadores, String id_server, String[] idsjugadores) throws SQLException{
 
             String sentenciaSql = "";
             PreparedStatement sentencia = null;
             try {
+                
+                conn.setAutoCommit(false);
+            
                 /// num_Espectadores
                 sentenciaSql = "UPDATE partidas SET num_Espectadores = ? " + "WHERE id_partida = ?";
                 sentencia = null;
@@ -472,13 +515,17 @@ public class Conexion {
 
                 sentencia.executeUpdate();
             } catch (SQLException sqle) {
-                sqle.printStackTrace();
+                conn.rollback();
+                throw sqle;
+                
             } finally {
                 if (sentencia != null)
                 try {
                     sentencia.close();
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 } catch (SQLException sqle) {
-                    sqle.printStackTrace();
+                    throw sqle;
                 }
             }
         
@@ -493,12 +540,14 @@ public class Conexion {
      * @pre que este el objeto en la base de datos
      * @post se modificara el objeto y la instancia en la base de datos
      */
-    public void ModificarJugadorSQL (Jugador j, String NickName, int nivel, String [] idsInventariosJugador){
+    public void ModificarJugadorSQL (Jugador j, String NickName, int nivel, String [] idsInventariosJugador) throws SQLException{
 
             String sentenciaSql = "";
             PreparedStatement sentencia = null;
             try {
                 
+                conn.setAutoCommit(false);
+            
                 sentenciaSql = "UPDATE jugadores SET nickName = ? " + "WHERE id_jugador = ?";
                 sentencia = null;
                 
@@ -567,13 +616,17 @@ public class Conexion {
                 }
                 
             } catch (SQLException sqle) {
-                sqle.printStackTrace();
+                conn.rollback();
+                throw sqle;
+                
             } finally {
                 if (sentencia != null)
                 try {
                     sentencia.close();
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 } catch (SQLException sqle) {
-                    sqle.printStackTrace();
+                    throw sqle;
                 }
             }
         
@@ -589,12 +642,13 @@ public class Conexion {
      * @pre que este el objeto en la base de datos
      * @post se modificara el objeto y la instancia en la base de datos
      */
-    public void ModificarInventarioSQL (InventarioCompartido inv, int slotsMaximos, int slotsOcupados, String[] idsJugadorInventarios){
+    public void ModificarInventarioSQL (InventarioCompartido inv, int slotsMaximos, int slotsOcupados, String[] idsJugadorInventarios) throws SQLException{
 
             String sentenciaSql = "";
             PreparedStatement sentencia = null;
             try {
-                
+                conn.setAutoCommit(false);
+            
                 sentenciaSql = "UPDATE inventarios SET slotsOcupados = ? " + "WHERE id_inventario = ?";
                 sentencia = null;
                 
@@ -663,13 +717,17 @@ public class Conexion {
             }
                 
             } catch (SQLException sqle) {
-                sqle.printStackTrace();
+                conn.rollback();
+                throw sqle;
+                
             } finally {
                 if (sentencia != null)
                 try {
                     sentencia.close();
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 } catch (SQLException sqle) {
-                    sqle.printStackTrace();
+                    throw sqle;
                 }
             }
         
@@ -683,21 +741,27 @@ public class Conexion {
      * @pre debe de existir el servidor en la base de datos
      * @post se eliminara el servidor
      */
-    public void EliminarServidorSQL (String id){
+    public void EliminarServidorSQL (String id) throws SQLException{
     String sentenciaSql = "DELETE FROM servidores WHERE id_servidor = ?";
     PreparedStatement sentencia = null;
     try {
+        conn.setAutoCommit(false);
+            
         sentencia = conn.prepareStatement(sentenciaSql);
         sentencia.setString(1, id.substring(2, id.length()));
         sentencia.executeUpdate();
     } catch (SQLException sqle) {
-        sqle.printStackTrace();
+        conn.rollback();
+        throw sqle;
+        
     } finally {
         if (sentencia != null)
             try {
                 sentencia.close();
+                conn.commit(); 
+                conn.setAutoCommit(true);
             } catch (SQLException sqle) {
-                sqle.printStackTrace();
+                throw sqle;
             }
         }
     }
@@ -709,46 +773,52 @@ public class Conexion {
      * @pre debe de existir la partida en la base de datos
      * @post se eliminara la partida
      */
-    public void EliminarPartidaSQL (Partida p){
+    public void EliminarPartidaSQL (Partida p) throws SQLException{
     String sentenciaSql = "";
     PreparedStatement sentencia = null;
     try {
         
-
-            //// Limpiar jugadores
-            for (int num=0; num < p.getJugadores().size(); num++){
-                sentenciaSql = "UPDATE jugadores SET id_partida = ? " + "WHERE id_jugador = ?";
-                sentencia = null;
-
-                sentencia = conn.prepareStatement(sentenciaSql);
-
-                sentencia.setString(1, null);
-
-                //Id
-                sentencia.setString(2, p.getJugadores().get(num).getIdPlayer().substring(2, p.getJugadores().get(num).getIdPlayer().length()));
-
-                sentencia.executeUpdate();
-
-            }
-
-            /// Eliminamos
-            sentenciaSql = "DELETE FROM partidas WHERE id_partida = ?";
+        conn.setAutoCommit(false);
+            
+        //// Limpiar jugadores
+        for (int num=0; num < p.getJugadores().size(); num++){
+            sentenciaSql = "UPDATE jugadores SET id_partida = ? " + "WHERE id_jugador = ?";
             sentencia = null;
-            
+
             sentencia = conn.prepareStatement(sentenciaSql);
-            
-            sentencia.setString(1, p.getIdPartida().substring(2, p.getIdPartida().length()));
+
+            sentencia.setString(1, null);
+
+            //Id
+            sentencia.setString(2, p.getJugadores().get(num).getIdPlayer().substring(2, p.getJugadores().get(num).getIdPlayer().length()));
 
             sentencia.executeUpdate();
+
+        }
+
+        /// Eliminamos
+        sentenciaSql = "DELETE FROM partidas WHERE id_partida = ?";
+        sentencia = null;
+
+        sentencia = conn.prepareStatement(sentenciaSql);
+
+        sentencia.setString(1, p.getIdPartida().substring(2, p.getIdPartida().length()));
+
+        sentencia.executeUpdate();
         
     } catch (SQLException sqle) {
-        sqle.printStackTrace();
+        conn.rollback();
+        throw sqle;
+        
+        
     } finally {
         if (sentencia != null)
             try {
                 sentencia.close();
+                conn.commit(); 
+                conn.setAutoCommit(true);
             } catch (SQLException sqle) {
-                sqle.printStackTrace();
+                throw sqle;
             }
         }
     }
@@ -761,10 +831,13 @@ public class Conexion {
      * @pre debe de existir la partida en la base de datos, el jugador debe de no estar en una partida
      * @post se eliminara el jugador
      */
-    public void EliminarJugadorSQL (Jugador j){
+    public void EliminarJugadorSQL (Jugador j) throws SQLException{
     String sentenciaSql = "";
     PreparedStatement sentencia = null;
     try {
+            conn.setAutoCommit(false);
+            
+        
             //retiramos el acceso de todos los inventarios del jugador
             for (InventarioCompartido inv : j.getInventarios()){
                 inv.removerAcceso(j.getIdPlayer());
@@ -789,13 +862,17 @@ public class Conexion {
             sentencia.executeUpdate();
         
     } catch (SQLException sqle) {
-        sqle.printStackTrace();
+        conn.rollback();
+        throw sqle;
+        
     } finally {
         if (sentencia != null)
             try {
                 sentencia.close();
+                conn.commit(); 
+                conn.setAutoCommit(true);
             } catch (SQLException sqle) {
-                sqle.printStackTrace();
+                throw sqle;
             }
         }
     }
@@ -807,7 +884,7 @@ public class Conexion {
      * @pre debe de existir el inventario en la base de datos, debe de no tener jugadores con acceso
      * @post se eliminara el inventario
      */
-    public void EliminarInventarioSQL (InventarioCompartido i){
+    public void EliminarInventarioSQL (InventarioCompartido i) throws SQLException{
     String sentenciaSql = "";
     PreparedStatement sentencia = null;
     try {
@@ -832,13 +909,17 @@ public class Conexion {
             sentencia.executeUpdate();
         
     } catch (SQLException sqle) {
-        sqle.printStackTrace();
+        conn.rollback();
+        throw sqle;
+        
     } finally {
         if (sentencia != null)
             try {
                 sentencia.close();
+                conn.commit(); 
+                conn.setAutoCommit(true);
             } catch (SQLException sqle) {
-                sqle.printStackTrace();
+                throw sqle;
             }
         }
     }
@@ -854,7 +935,7 @@ public class Conexion {
      * @pre debe de haber una conexion abierta
      * @post se actualizara el vector de la conexion 
      */
-    public void CargarServidoresSQL (){
+    public void CargarServidoresSQL () throws SQLException{
 
         String cons = "SELECT * FROM servidores;";
         PreparedStatement consulta = null;
@@ -863,7 +944,10 @@ public class Conexion {
 
         servidores_conexion.clear();
         
-        try{                                
+        try{       
+            
+            conn.setAutoCommit(false);
+            
                                 
             consulta = this.getConection().prepareStatement(cons);
 
@@ -876,16 +960,20 @@ public class Conexion {
             }
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             if (consulta != null){
                 try{
-                   consulta.close();
+                    consulta.close();
                     resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 }
                 catch(SQLException sqle2){
-                    sqle2.printStackTrace();
+                    throw sqle2;
                 }
                 
             }
@@ -899,7 +987,7 @@ public class Conexion {
      * @pre debe de haber una conexion abierta
      * @post se actualizara el vector de la conexion 
      */
-    public void CargarInventariosSQL (){
+    public void CargarInventariosSQL () throws SQLException{
 
         String cons = "SELECT * FROM inventarios;";
         PreparedStatement consulta = null;
@@ -908,7 +996,10 @@ public class Conexion {
 
         inventarios_conexion.clear();
 
-        try{                                
+        try{              
+            
+            conn.setAutoCommit(false);
+            
 
             consulta = this.getConection().prepareStatement(cons);
 
@@ -921,16 +1012,20 @@ public class Conexion {
             }
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             if (consulta != null){
                 try{
                    consulta.close();
                     resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 }
                 catch(SQLException sqle2){
-                    sqle2.printStackTrace();
+                    throw sqle2;
                 }
             }
         }
@@ -941,7 +1036,7 @@ public class Conexion {
      * @pre debe de haber una conexion abierta
      * @post se actualizara el vector de la conexion 
      */
-    public void CargarJugadoresSQL (){
+    public void CargarJugadoresSQL () throws SQLException{
 
         String cons = "SELECT * FROM jugadores;";
         PreparedStatement consulta = null;
@@ -950,7 +1045,10 @@ public class Conexion {
 
         jugadores_conexion.clear();
 
-        try{                                
+        try{    
+            
+            conn.setAutoCommit(false);
+            
 
             consulta = this.getConection().prepareStatement(cons);
 
@@ -963,16 +1061,20 @@ public class Conexion {
             }
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             if (consulta != null){
                 try{
                    consulta.close();
                     resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 }
                 catch(SQLException sqle2){
-                    sqle2.printStackTrace();
+                    throw sqle2;
                 }
             }
         }
@@ -984,7 +1086,7 @@ public class Conexion {
      * @pre debe de haberse cargado previamente los jugadores e inventarios
      * @post se actualizara los vectores de la conexion 
      */
-    public void cagarRelacionJI (){
+    public void cagarRelacionJI () throws SQLException{
 
         String cons = "SELECT * FROM accesos;";
         PreparedStatement consulta = null;
@@ -992,7 +1094,10 @@ public class Conexion {
         
 
 
-        try{                                
+        try{                    
+
+            conn.setAutoCommit(false);
+                        
 
             consulta = this.getConection().prepareStatement(cons);
             Boolean insertado;
@@ -1007,16 +1112,20 @@ public class Conexion {
             }
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             if (consulta != null){
                 try{
                    consulta.close();
                     resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 }
                 catch(SQLException sqle2){
-                    sqle2.printStackTrace();
+                    throw sqle2;
                 }
             }
         }
@@ -1028,7 +1137,7 @@ public class Conexion {
      * @pre debe de haberse cargado previamente los servidores y los jugadores
      * @post se actualizara el vector de la conexion 
      */
-    public void CargarPartidasSQL (){
+    public void CargarPartidasSQL () throws SQLException{
 
         String cons = "SELECT * FROM partidas;";
         PreparedStatement consulta = null;
@@ -1037,7 +1146,9 @@ public class Conexion {
 
         partidas_conexion.clear();
         
-        try{                                
+        try{         
+            conn.setAutoCommit(false);
+            
                                 
             consulta = this.getConection().prepareStatement(cons);
 
@@ -1066,16 +1177,19 @@ public class Conexion {
             }
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
         }
         finally{
             if (consulta != null){
                 try{
                    consulta.close();
                     resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 }
                 catch(SQLException sqle2){
-                    sqle2.printStackTrace();
+                    throw sqle2;
                 }
                 
             }
@@ -1180,7 +1294,7 @@ public class Conexion {
      * @param String id
      * @return Servidor s
      */
-    public Servidor getServidorSQLByID (String idS){
+    public Servidor getServidorSQLByID (String idS) throws SQLException{
         String cons = "SELECT * FROM servidores WHERE id_servidor = ?";
         PreparedStatement consulta = null;
         ResultSet resultado = null;
@@ -1188,7 +1302,8 @@ public class Conexion {
         int id = Integer.valueOf( idS.substring(2, idS.length()));
         
         try{                                
-                                
+            conn.setAutoCommit(false);
+                          
             consulta = this.getConection().prepareStatement(cons);
 
             consulta.setString(1, String.valueOf(id));
@@ -1202,16 +1317,20 @@ public class Conexion {
             }
         }
         catch(SQLException sqle){
-            sqle.printStackTrace();
+            conn.rollback();
+            throw sqle;
+            
         }
         finally{
             if (consulta != null){
                 try{
                    consulta.close();
                     resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
                 }
                 catch(SQLException sqle2){
-                    sqle2.printStackTrace();
+                    throw sqle2;
                 }
                 
             }

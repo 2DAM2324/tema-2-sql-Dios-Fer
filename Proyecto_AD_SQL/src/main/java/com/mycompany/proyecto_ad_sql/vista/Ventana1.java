@@ -31,6 +31,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,7 +73,12 @@ public class Ventana1 extends javax.swing.JFrame {
      */
     public Ventana1() throws IOException, FileNotFoundException, ClassNotFoundException, NotSerializableException, SAXException {
         initComponents();
-        controller=new Controller("ProyectoGames.db");
+        
+        try {
+            controller=new Controller("ProyectoGames.db");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error en el acceso a los datos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         IdServerSeleccionado="";
         IdInventarioSeleccionado="";
@@ -1042,12 +1048,16 @@ public class Ventana1 extends javax.swing.JFrame {
                         if (!duplicados){
                     
 
-                            //Pasamos datos al controlador, este crea el objeto y lo almacena
-                            controller.crearInventario(Integer.parseInt(jTextField_SlotsMaximos.getText().toString()), Integer.parseInt(jTextField_SlotsOcupados.getText().toString()), idsJugadores_Inventario);
-
-                            //Se actualiza la vista
-                            actualizar_vista_inventario();
-                            limpiar_vista_Inventario();
+                            try {
+                                //Pasamos datos al controlador, este crea el objeto y lo almacena
+                                controller.crearInventario(Integer.parseInt(jTextField_SlotsMaximos.getText().toString()), Integer.parseInt(jTextField_SlotsOcupados.getText().toString()), idsJugadores_Inventario);
+                                
+                                //Se actualiza la vista
+                                actualizar_vista_inventario();
+                                limpiar_vista_Inventario();
+                            } catch (SQLException ex) {
+                                JOptionPane.showMessageDialog(this, "Error en la creacion de inventario", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
 
                         }
                         else{
@@ -1108,8 +1118,12 @@ public class Ventana1 extends javax.swing.JFrame {
                 //Ponemos la id del que se eliminara
                 IdInventarioSeleccionado = inventarios_vista.get(jTable_Inventario.getSelectedRow()).getIdInventario();
 
-                //Eliminamos
-                controller.EliminarInventario(IdInventarioSeleccionado);
+                try {
+                    //Eliminamos
+                    controller.EliminarInventario(IdInventarioSeleccionado);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error en el borrado de inventario", "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 //Actualizamos la vista
                 actualizar_vista_inventario();
                 limpiar_vista_Inventario();
@@ -1169,13 +1183,18 @@ public class Ventana1 extends javax.swing.JFrame {
 
                             if (!duplicados){
 
-                                //Pasamos datos al controlador, este modifica el objeto y lo actualiza
-                                controller.ModificarInventario(IdInventarioSeleccionado, Integer.parseInt(jTextField_SlotsMaximos.getText().toString()), Integer.parseInt(jTextField_SlotsOcupados.getText().toString()), idsJugadores_Inventario);
-
-
-                                // Actualizamos vista
-                                actualizar_vista_inventario();
-                                limpiar_vista_Inventario();
+                                try {
+                                    //Pasamos datos al controlador, este modifica el objeto y lo actualiza
+                                    controller.ModificarInventario(IdInventarioSeleccionado, Integer.parseInt(jTextField_SlotsMaximos.getText().toString()), Integer.parseInt(jTextField_SlotsOcupados.getText().toString()), idsJugadores_Inventario);
+                                    
+                                    
+                                    // Actualizamos vista
+                                    actualizar_vista_inventario();
+                                    limpiar_vista_Inventario();
+                                } catch (SQLException ex) {
+                                    JOptionPane.showMessageDialog(this, "Error en la modificacion de inventario", "Error", JOptionPane.ERROR_MESSAGE);
+                                    
+                                }
 
 
                             }
@@ -1217,7 +1236,13 @@ public class Ventana1 extends javax.swing.JFrame {
         if(!jTextField_region.getText().toString().trim().equals("")){
 
             //Pasamos datos al controlador, este crea el objeto y lo almacena
-            controller.crearServidor(jTextField_region.getText());
+            try{
+                controller.crearServidor(jTextField_region.getText());
+            }
+            catch(SQLException s){
+                JOptionPane.showMessageDialog(this, "Error en la creacion de servidor", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
 
             //Actualizar vista
             actualizar_vista_server();
@@ -1246,14 +1271,18 @@ public class Ventana1 extends javax.swing.JFrame {
         if (jTable_server.getSelectedRow() != -1) { 
             if (controller.estaLibreIDServer(servidores_vista.get(jTable_server.getSelectedRow()).getIdServer())){
                 
-                //Ponemos la id del que se eliminara
-                IdServerSeleccionado = servidores_vista.get(jTable_server.getSelectedRow()).getIdServer();
-
-                //Eliminamos
-                controller.EliminarServidor(IdServerSeleccionado);
-                //Actualizamos la vista
-                actualizar_vista_server();
-                limpiar_vista_Servidor();
+                try {
+                    //Ponemos la id del que se eliminara
+                    IdServerSeleccionado = servidores_vista.get(jTable_server.getSelectedRow()).getIdServer();
+                    
+                    //Eliminamos
+                    controller.EliminarServidor(IdServerSeleccionado);
+                    //Actualizamos la vista
+                    actualizar_vista_server();
+                    limpiar_vista_Servidor();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error en el borrado de servidor", "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 
             }
             else{ 
@@ -1276,12 +1305,16 @@ public class Ventana1 extends javax.swing.JFrame {
         if (!IdServerSeleccionado.equals("")){
             if(!jTextField_region.getText().toString().trim().equals("")){
 
-                //Pasamos datos al controlador, este modifica el objeto y lo actualiza
-                controller.ModificarServidor(IdServerSeleccionado, jTextField_region.getText().toString());
-
-                // Actualizar vista
-                actualizar_vista_server();
-                limpiar_vista_Servidor();
+                try {
+                    //Pasamos datos al controlador, este modifica el objeto y lo actualiza
+                    controller.ModificarServidor(IdServerSeleccionado, jTextField_region.getText().toString());
+                    
+                    // Actualizar vista
+                    actualizar_vista_server();
+                    limpiar_vista_Servidor();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error en la modificacion de servidor", "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
             }
             else{ 
@@ -1305,14 +1338,18 @@ public class Ventana1 extends javax.swing.JFrame {
         //Seleccionamos y mandamos a eliminar el seleccionado en caso de poderse eliminar
         if (jTable_Partida.getSelectedRow() != -1) {
 
-            //Ponemos la id del que se eliminara
-            IdPartidaSeleccionado = partidas_vista.get(jTable_Partida.getSelectedRow()).getIdPartida();
-
-            //Eliminamos
-            controller.EliminarPartida(IdPartidaSeleccionado);
-            //Actualizamos la vista
-            actualizar_vista_partida();
-            limpiar_vista_Partida();
+            try {
+                //Ponemos la id del que se eliminara
+                IdPartidaSeleccionado = partidas_vista.get(jTable_Partida.getSelectedRow()).getIdPartida();
+                
+                //Eliminamos
+                controller.EliminarPartida(IdPartidaSeleccionado);
+                //Actualizamos la vista
+                actualizar_vista_partida();
+                limpiar_vista_Partida();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error en el borrado de partida", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
         else{ 
             JOptionPane.showMessageDialog(this, "No se ha seleccionado ninguna partida", "Error en seleccion", JOptionPane.ERROR_MESSAGE);
@@ -1400,8 +1437,12 @@ public class Ventana1 extends javax.swing.JFrame {
 
                                         
                                         idsJugadores_Partida=jTextField_JugadoresPartida.getText().toString().split(", ");
-                                        //Pasamos datos al controlador, este crea el objeto y lo almacena
-                                        controller.crearPartida(Integer.parseInt(jTextField_NumEspectadores.getText().toString()), jTextField_IdServer_Partida.getText().toString(), idsJugadores_Partida);
+                                        try {
+                                            //Pasamos datos al controlador, este crea el objeto y lo almacena
+                                            controller.crearPartida(Integer.parseInt(jTextField_NumEspectadores.getText().toString()), jTextField_IdServer_Partida.getText().toString(), idsJugadores_Partida);
+                                        } catch (SQLException ex) {
+                                            JOptionPane.showMessageDialog(this, "Error en la creacion de partida", "Error", JOptionPane.ERROR_MESSAGE);
+                                        }
 
                                         //Actualizar la vista
                                         actualizar_vista_partida();
@@ -1503,13 +1544,17 @@ public class Ventana1 extends javax.swing.JFrame {
                                         if (!duplicados){
 
 
-                                            idsJugadores_Partida=jTextField_JugadoresPartida.getText().toString().split(", ");
-                                            //Pasamos datos al controlador, este modifica el objeto y lo actualiza
-                                            controller.ModificarPartida(IdPartidaSeleccionado, Integer.parseInt(jTextField_NumEspectadores.getText().toString()), jTextField_IdServer_Partida.getText().toString(), idsJugadores_Partida);
-
-                                            //Actualizar vista
-                                            actualizar_vista_partida();
-                                            limpiar_vista_Partida();
+                                            try {
+                                                idsJugadores_Partida=jTextField_JugadoresPartida.getText().toString().split(", ");
+                                                //Pasamos datos al controlador, este modifica el objeto y lo actualiza
+                                                controller.ModificarPartida(IdPartidaSeleccionado, Integer.parseInt(jTextField_NumEspectadores.getText().toString()), jTextField_IdServer_Partida.getText().toString(), idsJugadores_Partida);
+                                                
+                                                //Actualizar vista
+                                                actualizar_vista_partida();
+                                                limpiar_vista_Partida();
+                                            } catch (SQLException ex) {
+                                                JOptionPane.showMessageDialog(this, "Error en la modificacion de partida", "Error", JOptionPane.ERROR_MESSAGE);
+                                            }
 
                                         }
                                         else{ 
@@ -1583,14 +1628,18 @@ public class Ventana1 extends javax.swing.JFrame {
         if (jTable_jugador.getSelectedRow() != -1) { 
             if (!controller.comprobarUsoIdJugador(jugadores_vista.get(jTable_jugador.getSelectedRow()).getIdPlayer())){
                 
-                //Ponemos la id del que se eliminara
-                IdJugadorSeleccionado = jugadores_vista.get(jTable_jugador.getSelectedRow()).getIdPlayer();
-                //Eliminamos
-                controller.EliminarJugador(IdJugadorSeleccionado);
-                //Actualizamos la vista
-                actualizar_vista_jugador();
-                //Terminamos con el seleccionado
-                limpiar_vista_Jugador();
+                try {
+                    //Ponemos la id del que se eliminara
+                    IdJugadorSeleccionado = jugadores_vista.get(jTable_jugador.getSelectedRow()).getIdPlayer();
+                    //Eliminamos
+                    controller.EliminarJugador(IdJugadorSeleccionado);
+                    //Actualizamos la vista
+                    actualizar_vista_jugador();
+                    //Terminamos con el seleccionado
+                    limpiar_vista_Jugador();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error en el borrado de jugador", "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 
             }
             else{ 
@@ -1662,8 +1711,12 @@ public class Ventana1 extends javax.swing.JFrame {
 
                         if (!duplicados){
 
-                            //Pasamos datos al controlador, este crea el objeto y lo almacena
-                            controller.crearJugador(jTextField_NickName.getText().toString(), Integer.parseInt(jTextField_Nivel.getText().toString()), idsInventarios_Jugador);
+                            try {
+                                //Pasamos datos al controlador, este crea el objeto y lo almacena
+                                controller.crearJugador(jTextField_NickName.getText().toString(), Integer.parseInt(jTextField_Nivel.getText().toString()), idsInventarios_Jugador);
+                            } catch (SQLException ex) {
+                                JOptionPane.showMessageDialog(this, "Error en la creacion de jugador", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
 
                             //Actualizar vista
                             actualizar_vista_jugador();
@@ -1736,8 +1789,12 @@ public class Ventana1 extends javax.swing.JFrame {
 
                             if (!duplicados){
 
-                                //Pasamos datos al controlador, este modifica el objeto y lo actualiza
-                                controller.ModificarJugador(IdJugadorSeleccionado, jTextField_NickName.getText().toString(), Integer.parseInt(jTextField_Nivel.getText().toString()), idsInventarios_Jugador);
+                                try {
+                                    //Pasamos datos al controlador, este modifica el objeto y lo actualiza
+                                    controller.ModificarJugador(IdJugadorSeleccionado, jTextField_NickName.getText().toString(), Integer.parseInt(jTextField_Nivel.getText().toString()), idsInventarios_Jugador);
+                                } catch (SQLException ex) {
+                                    JOptionPane.showMessageDialog(this, "Error en la modificacion de jugador", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
 
                                 //Actualizar vista
                                 actualizar_vista_jugador();
@@ -1954,7 +2011,11 @@ public class Ventana1 extends javax.swing.JFrame {
    
 
     public void formWindowClosing (java.awt.event.WindowEvent evt){
-        controller.cerrar_conexion();
+        try {
+            controller.cerrar_conexion();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error en la desconexion de la BD", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     /**

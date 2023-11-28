@@ -4,6 +4,7 @@ import com.mycompany.proyecto_ad_sql.modelos.InventarioCompartido;
 import com.mycompany.proyecto_ad_sql.modelos.Jugador;
 import com.mycompany.proyecto_ad_sql.modelos.Partida;
 import com.mycompany.proyecto_ad_sql.modelos.Servidor;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -33,7 +34,7 @@ public class ControllerTest {
     
     //////////
     
-    public ControllerTest() {
+    public ControllerTest()  throws SQLException {
         instance = new Controller("ProyectoGamesTest.db");
         
         idServerCreadoPrueba1 = "";
@@ -44,7 +45,7 @@ public class ControllerTest {
     }
     
     @AfterAll
-    public static void tearDownClass() {
+    public static void tearDownClass()  throws SQLException {
         //TODO borrar todo lo insertado y modificado
         
         //Eliminar cambios Prueba1
@@ -73,7 +74,7 @@ public class ControllerTest {
      * Test of crearServidor method, of class Controller.
      */
     @Test 
-    public void testCrearServidor() {
+    public void testCrearServidor()  throws SQLException {
         int numServers = instance.getServidores_sistema().size()-1;
         Boolean condicion=true;
         
@@ -117,7 +118,7 @@ public class ControllerTest {
      * Test of ModificarServidor method, of class Controller.
      */
     @Test
-    public void testModificarServidor() {
+    public void testModificarServidor()  throws SQLException{
         Boolean condicion = true; 
         Servidor sIni = instance.getServidores_sistema().get(0);
         Servidor sMod = null;

@@ -17,14 +17,8 @@ public class Proyecto_AD_SQL {
             v=new Ventana1();
             v.setVisible(true);
         }
-        catch(IOException ioe){
-            ioe.printStackTrace();
-        }
-        catch(ClassNotFoundException cnfe){
-            cnfe.printStackTrace();
-        }
-        catch(SAXException saxe){
-            saxe.printStackTrace();
+        catch(IOException | ClassNotFoundException | SAXException ioe){
+            //ioe.printStackTrace();
         }        
     }
 }

@@ -5,6 +5,7 @@ import com.mycompany.proyecto_ad_sql.modelos.InventarioCompartido;
 import com.mycompany.proyecto_ad_sql.modelos.Jugador;
 import com.mycompany.proyecto_ad_sql.modelos.Partida;
 import com.mycompany.proyecto_ad_sql.modelos.Servidor;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -26,9 +27,9 @@ public class Controller {
      /**
      * @brief Constructor del controlador con la lectura inicial de la base de datos
      */
-    public Controller (String dbName) {
+    public Controller (String dbName)  throws SQLException {
             
-            conn = new Conexion(dbName);
+            conn = new Conexion(dbName) ;
             
             servidores_sistema = conn.getServidoresSQL();
             
@@ -40,7 +41,7 @@ public class Controller {
             
     }
     
-    public void cerrar_conexion (){
+    public void cerrar_conexion ()  throws SQLException{
         conn.cerrarConexion();
     }
     
@@ -54,7 +55,7 @@ public class Controller {
      * @post se creara y guardara un servidor 
      * @param String region
      */
-    public void crearServidor (String region){
+    public void crearServidor (String region) throws SQLException{
         Servidor s = new Servidor (region);
         conn.InsertarServidorSQL(s);
         servidores_sistema.add (s);
@@ -67,7 +68,7 @@ public class Controller {
      * @param String Id -> id del servidor a modificar
      * @param String region -> nuevo dato
      */
-    public void ModificarServidor (String Id, String region){
+    public void ModificarServidor (String Id, String region) throws SQLException{
         int i=0;
         for (i=0; i<servidores_sistema.size() && !servidores_sistema.get(i).getIdServer().equals(Id); i++){
         }
@@ -81,7 +82,7 @@ public class Controller {
      * @post se eliminara y se guardaran los cambios
      * @param String Id -> id del servidor a eliminar
      */
-    public void EliminarServidor (String Id){
+    public void EliminarServidor (String Id) throws SQLException{
         int i=0;
         for (i=0; i<servidores_sistema.size() && !servidores_sistema.get(i).getIdServer().equals(Id); i++){
         }
@@ -106,7 +107,7 @@ public class Controller {
      * @param int slotsOcupados
      * @param String[] idsJugadorInventarios -> jugadores con acceso a ese inventario
      */
-    public void crearInventario (int slotsMaximos, int slotsOcupados, String[] idsJugadorInventarios){
+    public void crearInventario (int slotsMaximos, int slotsOcupados, String[] idsJugadorInventarios) throws SQLException{
         InventarioCompartido inv = new InventarioCompartido (slotsMaximos, slotsOcupados);
         
         
@@ -130,7 +131,7 @@ public class Controller {
      * @param int slotsOcupados
      * @param String[] idsJugadorInventarios -> jugadores con acceso a ese inventario
      */
-    public void ModificarInventario (String Id, int slotsMaximos, int slotsOcupados, String[] idsJugadorInventarios){
+    public void ModificarInventario (String Id, int slotsMaximos, int slotsOcupados, String[] idsJugadorInventarios) throws SQLException{
         int i=0;
         InventarioCompartido inv;
         
@@ -148,7 +149,7 @@ public class Controller {
      * @post se eliminara y se guardaran los cambios
      * @param String Id -> id del inventario a eliminar
      */
-    public void EliminarInventario (String Id){
+    public void EliminarInventario (String Id) throws SQLException{
         int i=0;
         for (i=0; i<inventarios_sistema.size() && !inventarios_sistema.get(i).getIdInventario().equals(Id); i++){
         }
@@ -157,7 +158,7 @@ public class Controller {
         
     }
     
-    public ArrayList<InventarioCompartido> getInventarios_sistema() {
+    public ArrayList<InventarioCompartido> getInventarios_sistema(){
         return inventarios_sistema;
     }
     
@@ -189,7 +190,7 @@ public class Controller {
      * @param String IdServerPartida -> id de un servidor que sera asignado a la partida
      * @param String[] idsjugadores -> grupo de ids de jugadores que seran usadas para buscar el jugador y asignarlo a la partida
      */
-    public void crearPartida (int numEspectadores, String IdServerPartida, String[] idsjugadores){
+    public void crearPartida (int numEspectadores, String IdServerPartida, String[] idsjugadores) throws SQLException{
         
         Partida p = new Partida (numEspectadores, obtenerServidorId(IdServerPartida));
         
@@ -212,7 +213,7 @@ public class Controller {
      * @param String IdServerPartida -> id de un servidor que sera asignado a la partida
      * @param String[] idsjugadores -> grupo de ids de jugadores que seran usadas para buscar el jugador y asignarlo a la partida
      */
-    public void ModificarPartida (String Id, int numEspectadores, String id_server, String[] idsjugadores){
+    public void ModificarPartida (String Id, int numEspectadores, String id_server, String[] idsjugadores) throws SQLException{
         int i=0;
         for (i=0; i<partidas_sistema.size() && !partidas_sistema.get(i).getIdPartida().equals(Id); i++){
         }
@@ -226,7 +227,7 @@ public class Controller {
      * @post se eliminara y se guardaran los cambios
      * @param String Id -> id de la partida a eliminar
      */
-    public void EliminarPartida (String Id){
+    public void EliminarPartida (String Id) throws SQLException{
         int i=0;
         for (i=0; i<partidas_sistema.size() && !partidas_sistema.get(i).getIdPartida().equals(Id); i++){
         }
@@ -349,7 +350,7 @@ public class Controller {
      * @param int nivel
      * @param String[] idsInventariosJugador -> grupo de ids de inventarios usados para asignar a estos al jugador 
      */
-    public void crearJugador (String NickName, int nivel, String[] idsInventariosJugador){
+    public void crearJugador (String NickName, int nivel, String[] idsInventariosJugador) throws SQLException{
         
         Jugador j = new Jugador (NickName, nivel);
         
@@ -374,7 +375,7 @@ public class Controller {
      * @param int nivel
      * @param String[] idsInventariosJugador -> grupo de ids de inventarios usados para asignar a estos al jugador      
      */
-    public void ModificarJugador (String Id, String NickName, int nivel, String [] idsInventariosJugador){
+    public void ModificarJugador (String Id, String NickName, int nivel, String [] idsInventariosJugador) throws SQLException{
         int i=0;
         Jugador j;
         for (i=0; i<jugadores_sistema.size() && !jugadores_sistema.get(i).getIdPlayer().equals(Id); i++){
@@ -389,7 +390,7 @@ public class Controller {
      * @post se eliminara y se guardaran los cambios
      * @param String Id -> id del jugador a eliminar
      */
-    public void EliminarJugador (String Id){
+    public void EliminarJugador (String Id) throws SQLException{
         int i=0;
         for (i=0; i<jugadores_sistema.size() && !jugadores_sistema.get(i).getIdPlayer().equals(Id); i++){
         }
