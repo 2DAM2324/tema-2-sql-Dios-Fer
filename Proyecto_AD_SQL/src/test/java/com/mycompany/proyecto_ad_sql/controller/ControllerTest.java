@@ -32,6 +32,8 @@ public class ControllerTest {
     
     private static Servidor sIniPreModPrueba2;
     
+    private static Servidor sEliminadoPrueba3;
+    
     //////////
     
     public ControllerTest()  throws SQLException {
@@ -46,7 +48,7 @@ public class ControllerTest {
     
     @AfterAll
     public static void tearDownClass()  throws SQLException {
-        //TODO borrar todo lo insertado y modificado
+        //Borramos todo lo insertado y modificado
         
         //Eliminar cambios Prueba1
         if (!idServerCreadoPrueba1.equals("")){
@@ -58,6 +60,7 @@ public class ControllerTest {
             instance.ModificarServidor(sIniPreModPrueba2.getIdServer(), sIniPreModPrueba2.getRegion());
         }
         
+        
     }
     
     @BeforeEach
@@ -68,13 +71,42 @@ public class ControllerTest {
     public void tearDown() {
     }
 
+    
+    /**
+     * Prueba 0
+     * Partimos de que nuestra bd tiene instancias y la lectura inicial es en la creacion del controlador
+     * por tanto esta lectura debera de haber rellenado los vectores del controlador cosa que se comprueba en este test
+     */
+    @Test
+    public void testLecturaInicial() throws SQLException {
+        Boolean condicion=true;
+        if (instance.getServidores_sistema().size()==0){
+            condicion=false;
+        }
+        
+        if (instance.getInventarios_sistema().size()==0){
+            condicion=false;
+        }
+        
+        else if (instance.getJugadores_sistema().size()==0){
+            condicion=false;
+        }
+        
+        else if (instance.getPartidas_sistema().size()==0){
+            condicion=false;
+        }
+        
+        assertEquals(true, condicion);
+    }
 
     /**
      * Prueba 1
-     * Test of crearServidor method, of class Controller.
+     * Prueba para comprobar que se crea un servidor nuevo, se comprobara tanto su adicion al vector del sistema 
+     * y que tenga id, la id es generada por la bd por eso nos confirma que se ha creado en la bd
+     * posteriormente se restauraran los cambios
      */
     @Test 
-    public void testCrearServidor()  throws SQLException {
+    public void testCrearServidor() throws SQLException {
         int numServers = instance.getServidores_sistema().size()-1;
         Boolean condicion=true;
         
@@ -115,10 +147,11 @@ public class ControllerTest {
 
     /**
      * Prueba2
-     * Test of ModificarServidor method, of class Controller.
+     * Modifico uno de los servidores, guardando su instancia inicial y comprobando que se modifican los datos
+     * se restaurara posteriormente
      */
     @Test
-    public void testModificarServidor()  throws SQLException{
+    public void testModificarServidor() throws SQLException{
         Boolean condicion = true; 
         Servidor sIni = instance.getServidores_sistema().get(0);
         Servidor sMod = null;
@@ -130,7 +163,7 @@ public class ControllerTest {
 
         sMod = instance.getconn().getServidorSQLByID(idIni);
         
-        if (sMod.equals(null)){
+        if (sMod==null){
             condicion=false;
         }
         if (!sMod.getRegion().equals(regionMod)){
@@ -144,10 +177,32 @@ public class ControllerTest {
     
 
     /**
-     * Test of EliminarServidor method, of class Controller.
+     * Prueba3
+     * se crea y elimina un servidor, el crear es partiendo de que ya funciona el crear, pero se hace esto ya que el 
+     * objetivo de este test es comprobar su correcta eliminacion y es mas simple eliminar uno sin dependencias, para nuestro actual objetivo
      */
     @Test
-    public void testEliminarServidor() {
+    public void testEliminarServidor() throws SQLException {
+        
+        //Creamos un servidor para comprobar que se elimine correctamente, objetivo de esta prueba
+        instance.crearServidor("Prueba");
+        String idNewServerPrueba = instance.getServidores_sistema().get(instance.getServidores_sistema().size()-1).getIdServer();
+        
+        Boolean condicion=false;
+        int tamanio = instance.getServidores_sistema().size();
+        String IdEliminado = idNewServerPrueba;
+        sEliminadoPrueba3 = instance.getServidores_sistema().get(instance.getServidores_sistema().size()-1);
+
+        instance.EliminarServidor(IdEliminado);
+        
+        if (instance.getServidores_sistema().size()==tamanio-1){
+            condicion=true;
+        }
+        if (instance.getconn().getServidorSQLByID(IdEliminado)!=null){
+            condicion=false;
+        }
+        
+        assertEquals(true, condicion);
         
     }
 
