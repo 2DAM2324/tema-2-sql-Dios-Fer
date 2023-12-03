@@ -32,12 +32,12 @@ public class ControllerTest {
     
     private static Servidor sIniPreModPrueba2;
     
-    private static Servidor sEliminadoPrueba3;
     
     
     private static String idInventarioCreadoPrueba4;
     
     private static InventarioCompartido iIniPreModPrueba5;
+    
    
     //////////
     
@@ -218,7 +218,6 @@ public class ControllerTest {
         Boolean condicion=false;
         int tamanio = instance.getServidores_sistema().size();
         String IdEliminado = idNewServerPrueba;
-        sEliminadoPrueba3 = instance.getServidores_sistema().get(instance.getServidores_sistema().size()-1);
 
         instance.EliminarServidor(IdEliminado);
         
@@ -328,16 +327,44 @@ public class ControllerTest {
     }
 
     /**
-     * Test of EliminarInventario method, of class Controller.
+     * Prueba6
+     * Se crea y elimina un inventario, el crear es partiendo de que ya funciona el crear, pero se hace esto ya que el 
+     * objetivo de este test es comprobar su correcta eliminacion y es mas simple eliminar uno sin dependencias, para nuestro actual objetivo
      */
     @Test
     public void testEliminarInventario() throws SQLException {
+        //Creamos un inventario para comprobar que se elimine correctamente, objetivo de esta prueba
+        int sMax = 100;
+        int sOcu = 10;
+        String jString = instance.getJugadores_sistema().get(0).getIdPlayer() + ", " + instance.getJugadores_sistema().get(1).getIdPlayer();
+        String [] jugadores = jString.split(", ");
         
+        instance.crearInventario(sMax, sOcu, jugadores);
+        
+        Boolean condicion=false;
+        
+        int tamanio = instance.getInventarios_sistema().size();
+        
+        String idNewInventarioPrueba = instance.getInventarios_sistema().get(instance.getInventarios_sistema().size()-1).getIdInventario();
+
+        String IdEliminado = idNewInventarioPrueba;
+
+        instance.EliminarInventario(IdEliminado);
+        
+        if (instance.getInventarios_sistema().size()==tamanio-1){
+            condicion=true;
+        }
+        if (instance.getconn().getInventarioSQLByID(IdEliminado)!=null){
+            condicion=false;
+        }
+        
+        assertEquals(true, condicion);
     }
 
 
     /**
-     * Test of crearPartida method, of class Controller.
+     * Preuba7
+     * 
      */
     @Test
     public void testCrearPartida() throws SQLException {
@@ -345,7 +372,8 @@ public class ControllerTest {
     }
 
     /**
-     * Test of ModificarPartida method, of class Controller.
+     * Preuba8
+     * 
      */
     @Test
     public void testModificarPartida() throws SQLException {
@@ -353,7 +381,7 @@ public class ControllerTest {
     }
 
     /**
-     * Test of EliminarPartida method, of class Controller.
+     * Preuba9
      */
     @Test
     public void testEliminarPartida() throws SQLException {
@@ -362,7 +390,8 @@ public class ControllerTest {
 
 
     /**
-     * Test of crearJugador method, of class Controller.
+     * Preuba10
+     * 
      */
     @Test
     public void testCrearJugador() throws SQLException {
@@ -370,7 +399,8 @@ public class ControllerTest {
     }
 
     /**
-     * Test of ModificarJugador method, of class Controller.
+     * Preuba11
+     * 
      */
     @Test
     public void testModificarJugador() throws SQLException {
@@ -378,20 +408,15 @@ public class ControllerTest {
     }
 
     /**
-     * Test of EliminarJugador method, of class Controller.
+     * Preuba12
+     * 
      */
     @Test
     public void testEliminarJugador() throws SQLException {
         
     }
 
-    /**
-     * Test of getJugadores_sistema method, of class Controller.
-     */
-    @Test
-    public void testGetJugadores_sistema() throws SQLException {
-        
-    }
+
 
     
 }

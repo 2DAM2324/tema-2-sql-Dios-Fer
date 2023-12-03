@@ -1342,6 +1342,55 @@ public class Conexion {
         
     }
     
+    /**
+     * @brief obtiene un servidor de la base de datos 
+     * @param String id
+     * @return Servidor s
+     */
+    public InventarioCompartido getInventarioSQLByID (String idS) throws SQLException{
+        String cons = "SELECT * FROM inventarios WHERE id_inventario = ?;";
+        PreparedStatement consulta = null;
+        ResultSet resultado = null;
+        InventarioCompartido inv = null;
+
+        try{
+
+            conn.setAutoCommit(false);
+
+
+            consulta = this.getConection().prepareStatement(cons);
+
+            resultado = consulta.executeQuery();
+            while(resultado.next()){
+
+                inv = new InventarioCompartido ("I-"+resultado.getString(1).toString(), resultado.getInt(3), resultado.getInt(2));
+
+            }
+        }
+        catch(SQLException sqle){
+            conn.rollback();
+            throw sqle;
+
+        }
+        finally{
+            if (consulta != null){
+                try{
+                   consulta.close();
+                    resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
+                }
+                catch(SQLException sqle2){
+                    throw sqle2;
+                }
+            }
+        }
+
+        return inv;
+    }
+    
+    
+    
 }
 
 
