@@ -41,6 +41,12 @@ public class ControllerTest {
     private static String idPartidaCreadoPrueba7="";
     
     private static Partida pIniPreModPrueba8;
+    
+    
+    private static String idJugadorCreadoPrueba10="";
+    
+    private static Partida jIniPreModPrueba8;
+    
    
     //////////
     
@@ -106,6 +112,12 @@ public class ControllerTest {
             }
             idsJugadorPartida = SidsJugadorPartida.split(", ");
             instance.ModificarPartida(pIniPreModPrueba8.getIdPartida(), pIniPreModPrueba8.getNumEspectadores(), pIniPreModPrueba8.getServerPartida().getIdServer(), idsJugadorPartida);
+        }
+        
+        //Eliminar cambios Prueba10
+        
+        if (!idJugadorCreadoPrueba10.equals("")){
+            instance.EliminarJugador(idJugadorCreadoPrueba10);
         }
         
 
@@ -517,11 +529,42 @@ public class ControllerTest {
 
     /**
      * Preuba10
-     * 
+     * Se crea un jugador con inventarios, comprobando su correcta creacion
+     * se eliminara en el after all
      */
     @Test
     public void testCrearJugador() throws SQLException {
+        int numJugadores = instance.getJugadores_sistema().size()-1;
+        Boolean condicion=true;
         
+        String nickName = "FER";
+        int nivel = 10;
+        
+        String iString = instance.getInventarios_sistema().get(0).getIdInventario()+ ", " + instance.getInventarios_sistema().get(1).getIdInventario();
+        String [] inventarios = iString.split(", ");
+        
+        instance.crearJugador(nickName, nivel, inventarios);
+ 
+        //Se ha creado y añadido
+        if (numJugadores+1 == instance.getJugadores_sistema().size()-1){
+            
+            //Se ha creado pero no se ha introducido en la base de datos pues no tine id y la base de datos se lo crea e introduce
+            if (instance.getJugadores_sistema().get(instance.getJugadores_sistema().size()-1).getIdPlayer()=="" || instance.getJugadores_sistema().get(instance.getJugadores_sistema().size()-1).getIdPlayer()==null ){
+
+                //NO pasa el test
+                condicion=false;
+                assertEquals(true, condicion);
+                
+            }
+            else {
+
+                //SI pasa el test
+                condicion=true;
+                assertEquals(true, condicion);
+                idJugadorCreadoPrueba10 = instance.getJugadores_sistema().get(instance.getJugadores_sistema().size()-1).getIdPlayer();
+
+            }
+        }
     }
 
     /**
