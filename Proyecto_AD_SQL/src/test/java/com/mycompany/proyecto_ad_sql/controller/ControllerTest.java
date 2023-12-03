@@ -34,12 +34,16 @@ public class ControllerTest {
     
     private static Servidor sEliminadoPrueba3;
     
+    
+    private static String idInventarioCreadoPrueba4;
+    
     //////////
     
     public ControllerTest()  throws SQLException {
         instance = new Controller("ProyectoGamesTest.db");
         
         idServerCreadoPrueba1 = "";
+        idInventarioCreadoPrueba4 = "";
     }
     
     @BeforeAll
@@ -58,6 +62,12 @@ public class ControllerTest {
         //Eliminar cambios Prueba2
         if (sIniPreModPrueba2!=null){
             instance.ModificarServidor(sIniPreModPrueba2.getIdServer(), sIniPreModPrueba2.getRegion());
+        }
+        
+        //Eliminar cambios Prueba4
+        
+        if (!idInventarioCreadoPrueba4.equals("")){
+            instance.EliminarInventario(idInventarioCreadoPrueba4);
         }
         
         
@@ -208,10 +218,43 @@ public class ControllerTest {
 
 
     /**
-     * Test of crearInventario method, of class Controller.
+     * Prueba4
+     * Crearemos un inventario con los dos primeros jugadores de nuestra actual instancia para comprobar su correcta creacion
+     * Tras esto el inventario sera eliminado en el after all
      */
     @Test
-    public void testCrearInventario() {
+    public void testCrearInventario() throws SQLException {
+        
+        int numInventarios = instance.getInventarios_sistema().size()-1;
+        Boolean condicion=true;
+        
+        int sMax = 100;
+        int sOcu = 10;
+        String jString = instance.getJugadores_sistema().get(0).getIdPlayer() + ", " + instance.getJugadores_sistema().get(1).getIdPlayer();
+        String [] jugadores = jString.split(", ");
+        
+        instance.crearInventario(sMax, sOcu, jugadores);
+ 
+        //Se ha creado y añadido
+        if (numInventarios+1 == instance.getInventarios_sistema().size()-1){
+            
+            //Se ha creado pero no se ha introducido en la base de datos pues no tine id y la base de datos se lo crea e introduce
+            if (instance.getInventarios_sistema().get(instance.getInventarios_sistema().size()-1).getIdInventario()=="" || instance.getInventarios_sistema().get(instance.getInventarios_sistema().size()-1).getIdInventario()==null ){
+
+                //NO pasa el test
+                condicion=false;
+                assertEquals(true, condicion);
+                
+            }
+            else {
+
+                //SI pasa el test
+                condicion=true;
+                assertEquals(true, condicion);
+                idInventarioCreadoPrueba4 = instance.getInventarios_sistema().get(instance.getInventarios_sistema().size()-1).getIdInventario();
+
+            }
+        }
         
     }
 
@@ -219,7 +262,7 @@ public class ControllerTest {
      * Test of ModificarInventario method, of class Controller.
      */
     @Test
-    public void testModificarInventario() {
+    public void testModificarInventario() throws SQLException {
         
     }
 
@@ -227,7 +270,7 @@ public class ControllerTest {
      * Test of EliminarInventario method, of class Controller.
      */
     @Test
-    public void testEliminarInventario() {
+    public void testEliminarInventario() throws SQLException {
         
     }
 
@@ -236,7 +279,7 @@ public class ControllerTest {
      * Test of crearPartida method, of class Controller.
      */
     @Test
-    public void testCrearPartida() {
+    public void testCrearPartida() throws SQLException {
         
     }
 
@@ -244,7 +287,7 @@ public class ControllerTest {
      * Test of ModificarPartida method, of class Controller.
      */
     @Test
-    public void testModificarPartida() {
+    public void testModificarPartida() throws SQLException {
         
     }
 
@@ -252,7 +295,7 @@ public class ControllerTest {
      * Test of EliminarPartida method, of class Controller.
      */
     @Test
-    public void testEliminarPartida() {
+    public void testEliminarPartida() throws SQLException {
         
     }
 
@@ -261,7 +304,7 @@ public class ControllerTest {
      * Test of crearJugador method, of class Controller.
      */
     @Test
-    public void testCrearJugador() {
+    public void testCrearJugador() throws SQLException {
         
     }
 
@@ -269,7 +312,7 @@ public class ControllerTest {
      * Test of ModificarJugador method, of class Controller.
      */
     @Test
-    public void testModificarJugador() {
+    public void testModificarJugador() throws SQLException {
         
     }
 
@@ -277,7 +320,7 @@ public class ControllerTest {
      * Test of EliminarJugador method, of class Controller.
      */
     @Test
-    public void testEliminarJugador() {
+    public void testEliminarJugador() throws SQLException {
         
     }
 
@@ -285,7 +328,7 @@ public class ControllerTest {
      * Test of getJugadores_sistema method, of class Controller.
      */
     @Test
-    public void testGetJugadores_sistema() {
+    public void testGetJugadores_sistema() throws SQLException {
         
     }
 

@@ -54,6 +54,8 @@ CREATE TABLE accesos (
     id_jugador INTEGER,
     id_inventario INTEGER,
 
+    
+
     FOREIGN KEY (id_jugador) REFERENCES jugadores (id_jugador)
     FOREIGN KEY (id_inventario) REFERENCES jugadores (id_inventario)
     PRIMARY KEY (id_inventario, id_jugador)

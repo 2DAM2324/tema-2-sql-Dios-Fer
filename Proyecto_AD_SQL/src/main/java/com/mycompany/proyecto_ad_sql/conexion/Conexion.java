@@ -90,7 +90,8 @@ public class Conexion {
      */
     private void abrirConexion () throws SQLException{
         try {
-            String url = "jdbc:sqlite:" + dbName + "?foreign_keys=true";
+            
+            String url = "jdbc:sqlite:" + dbName;
             conn = DriverManager.getConnection(url);
             //System.out.println("Conexion iniciada correctamente");
         } catch (SQLException e) {
@@ -322,7 +323,6 @@ public class Conexion {
         try{
             
             conn.setAutoCommit(false);
-            
             sentencia = conn.prepareStatement(sent, Statement.RETURN_GENERATED_KEYS);
             
             sentencia.setString(1, String.valueOf(i.getSlotsOcupados()));
@@ -335,18 +335,18 @@ public class Conexion {
             
             i.setIdInventario("I-" + idGenerado);
             
-
-            for (int num=0; num < i.getJugadores().size(); num++){
             
-                sent = "INSERT INTO accesos (id_jugador, id_inventario) VALUES (?, ?)";
+            for (int num=0; num < i.getJugadores().size(); num++){
+
+                sent = "INSERT INTO accesos (id_jugador, id_inventario) VALUES (?, ?);";
                 sentencia = null;
                 
                 sentencia = conn.prepareStatement(sent);
                 
-                sentencia.setString(2, i.getIdInventario().substring(2, i.getIdInventario().length()));
+                sentencia.setInt(2, Integer.valueOf(i.getIdInventario().substring(2, i.getIdInventario().length())));
 
                 
-                sentencia.setString(1, i.getJugadores().get(num).getIdPlayer().substring(2, i.getJugadores().get(num).getIdPlayer().length()));
+                sentencia.setInt(1, Integer.valueOf(i.getJugadores().get(num).getIdPlayer().substring(2, i.getJugadores().get(num).getIdPlayer().length())));
                 
                 sentencia.executeUpdate();
 
@@ -357,6 +357,7 @@ public class Conexion {
         catch(SQLException sqle){
             conn.rollback();
             throw sqle;
+            
             
         }
         finally{
@@ -888,7 +889,8 @@ public class Conexion {
     String sentenciaSql = "";
     PreparedStatement sentencia = null;
     try {
-        
+            conn.setAutoCommit(false);
+            
 
             //// Limpiar jugadores del imnventario // NO debreia de hacer falta por los filtros el contexto pero pongamoslo por si acaso
             sentenciaSql = "DELETE FROM accesos WHERE id_inventario = ?";
