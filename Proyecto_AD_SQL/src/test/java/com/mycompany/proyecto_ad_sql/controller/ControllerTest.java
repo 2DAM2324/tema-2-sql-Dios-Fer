@@ -135,6 +135,9 @@ public class ControllerTest {
             instance.ModificarJugador(jIniPreModPrueba11.getIdPlayer(), jIniPreModPrueba11.getNickName(), jIniPreModPrueba11.getNivel(), idsJugadorInventarios);
         }
 
+        
+        //Cerramos la conexion con la bd
+        instance.cerrar_conexion();
     }
     
     @BeforeEach
