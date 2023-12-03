@@ -28,15 +28,17 @@ public class ControllerTest {
     
     ///////////
     
-    private static String idServerCreadoPrueba1;
+    private static String idServerCreadoPrueba1="";
     
     private static Servidor sIniPreModPrueba2;
     
     
-    
-    private static String idInventarioCreadoPrueba4;
+    private static String idInventarioCreadoPrueba4="";
     
     private static InventarioCompartido iIniPreModPrueba5;
+    
+    
+    private static String idPartidaCreadoPrueba7="";
     
    
     //////////
@@ -44,8 +46,6 @@ public class ControllerTest {
     public ControllerTest()  throws SQLException {
         instance = new Controller("ProyectoGamesTest.db");
         
-        idServerCreadoPrueba1 = "";
-        idInventarioCreadoPrueba4 = "";
     }
     
     @BeforeAll
@@ -85,6 +85,16 @@ public class ControllerTest {
             idsJugadorInventarios = SidsJugadorInventarios.split(", ");
             instance.ModificarInventario(iIniPreModPrueba5.getIdInventario(), iIniPreModPrueba5.getSlotsMaximos(), iIniPreModPrueba5.getSlotsOcupados(), idsJugadorInventarios);
         }
+        
+        
+        //Eliminar cambios Prueba7
+        
+        if (!idPartidaCreadoPrueba7.equals("")){
+            instance.EliminarPartida(idPartidaCreadoPrueba7);
+        }
+        
+        
+       
         
         
     }
@@ -157,7 +167,6 @@ public class ControllerTest {
                 condicion=true;
                 assertEquals(true, condicion);
                 idServerCreadoPrueba1 = instance.getServidores_sistema().get(instance.getServidores_sistema().size()-1).getIdServer();
-
             }
         }
         else {
@@ -273,8 +282,7 @@ public class ControllerTest {
         }
         
     }
-    
-    //TODO EL MODIFICAR HAY QUE HACER COPIA NO DESDE PUNTERO
+
     
     /**
      * Prueba 5
@@ -364,10 +372,43 @@ public class ControllerTest {
 
     /**
      * Preuba7
-     * 
+     * Test para la creadcion de una partida introduciendo tambien un jugador en esta
+     * los cambios se eliminaran en el after all
      */
     @Test
     public void testCrearPartida() throws SQLException {
+        int numPartidas = instance.getPartidas_sistema().size()-1;
+        Boolean condicion=true;
+        
+        int numEspectadores = 100;
+        String idServer = instance.getServidores_sistema().get(4).getIdServer();
+        
+        String pString = instance.getJugadores_sistema().get(4).getIdPlayer();
+        
+        String [] jugadores = pString.split(", ");
+        
+        instance.crearPartida(numEspectadores, idServer, jugadores);
+ 
+        //Se ha creado y añadido
+        if (numPartidas+1 == instance.getPartidas_sistema().size()-1){
+            
+            //Se ha creado pero no se ha introducido en la base de datos pues no tine id y la base de datos se lo crea e introduce
+            if (instance.getPartidas_sistema().get(instance.getPartidas_sistema().size()-1).getIdPartida()=="" || instance.getPartidas_sistema().get(instance.getPartidas_sistema().size()-1).getIdPartida()==null ){
+
+                //NO pasa el test
+                condicion=false;
+                assertEquals(true, condicion);
+                
+            }
+            else {
+
+                //SI pasa el test
+                condicion=true;
+                assertEquals(true, condicion);
+                idPartidaCreadoPrueba7 = instance.getPartidas_sistema().get(instance.getPartidas_sistema().size()-1).getIdPartida();
+
+            }
+        }
         
     }
 
