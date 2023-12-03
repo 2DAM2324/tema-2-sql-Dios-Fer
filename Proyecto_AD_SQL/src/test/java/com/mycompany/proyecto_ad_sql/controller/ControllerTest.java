@@ -45,7 +45,7 @@ public class ControllerTest {
     
     private static String idJugadorCreadoPrueba10="";
     
-    private static Partida jIniPreModPrueba8;
+    private static Jugador jIniPreModPrueba11;
     
    
     //////////
@@ -120,6 +120,20 @@ public class ControllerTest {
             instance.EliminarJugador(idJugadorCreadoPrueba10);
         }
         
+        
+        //Eliminar cambios Prueba11
+        if (jIniPreModPrueba11!=null){
+            String [] idsJugadorInventarios;
+            String SidsJugadorInventarios="";
+            for (int i=0; i < jIniPreModPrueba11.getInventarios().size(); i++){
+                SidsJugadorInventarios += jIniPreModPrueba11.getInventarios().get(i).getIdInventario();
+                if (jIniPreModPrueba11.getInventarios().size()-1!=i){
+                    SidsJugadorInventarios += ", ";
+                }
+            }
+            idsJugadorInventarios = SidsJugadorInventarios.split(", ");
+            instance.ModificarJugador(jIniPreModPrueba11.getIdPlayer(), jIniPreModPrueba11.getNickName(), jIniPreModPrueba11.getNivel(), idsJugadorInventarios);
+        }
 
     }
     
@@ -569,11 +583,50 @@ public class ControllerTest {
 
     /**
      * Preuba11
-     * 
+     * Test para modificar un jugador, comprobando que se hallan realizado los cambios
+     * los cambios se restauraran en el after all
      */
     @Test
     public void testModificarJugador() throws SQLException {
+        Boolean condicion = true; 
+        Jugador jIni = new Jugador(instance.getJugadores_sistema().get(0).getIdPlayer(), instance.getJugadores_sistema().get(0).getNickName(), instance.getJugadores_sistema().get(0).getNivel());
+        Jugador jMod = null;
+
+        String nickNameMod = "PRUEBA";
+        int nivelMod = 90;
         
+        String iString = instance.getInventarios_sistema().get(0).getIdInventario()+ ", " + instance.getInventarios_sistema().get(1).getIdInventario();
+        String [] inventariosMod = iString.split(", ");
+        
+        
+        String idIni = instance.getJugadores_sistema().get(0).getIdPlayer();
+
+        instance.ModificarJugador(idIni, nickNameMod, nivelMod, inventariosMod);
+
+        jMod = instance.getJugadorById(idIni);
+        
+        if (jMod==null){
+            condicion=false;
+        }
+        else if (!jMod.getNickName().equals(nickNameMod)){
+            condicion=false;
+        }
+        else if (jMod.getNivel()!=nivelMod){
+            condicion=false;
+        }
+        else{
+            int i=0;
+            for (InventarioCompartido inv : jMod.getInventarios()){
+                
+                if (!inv.getIdInventario().equals(inventariosMod[i])){
+                    condicion=false;
+                }
+                i++;
+            }
+        }
+        
+        jIniPreModPrueba11 = jIni;
+        assertEquals(true, condicion);
     }
 
     /**
