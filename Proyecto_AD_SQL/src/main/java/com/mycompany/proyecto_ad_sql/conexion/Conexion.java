@@ -1347,7 +1347,7 @@ public class Conexion {
      * @param String id
      * @return InventarioCompartido inv
      */
-    public InventarioCompartido getInventarioSQLByID (String idS) throws SQLException{
+    public InventarioCompartido getInventarioSQLByID (String id) throws SQLException{
         String cons = "SELECT * FROM inventarios WHERE id_inventario = ?;";
         PreparedStatement consulta = null;
         ResultSet resultado = null;
@@ -1357,8 +1357,11 @@ public class Conexion {
 
             conn.setAutoCommit(false);
 
-
+            
+            
             consulta = this.getConection().prepareStatement(cons);
+            
+            consulta.setInt(1, Integer.valueOf(id.substring(2, id.length())));
 
             resultado = consulta.executeQuery();
             while(resultado.next()){
@@ -1400,7 +1403,6 @@ public class Conexion {
         ResultSet resultado = null;
         Partida p=null;
 
-        partidas_conexion.clear();
         
         try{         
             conn.setAutoCommit(false);
@@ -1408,7 +1410,7 @@ public class Conexion {
                                 
             consulta = this.getConection().prepareStatement(cons);
 
-            consulta.setString(1, String.valueOf(id));
+            consulta.setInt(1, Integer.valueOf(id.substring(2, id.length())));
             
             resultado = consulta.executeQuery();
             while(resultado.next()){
@@ -1441,6 +1443,54 @@ public class Conexion {
         return p;
     }
     
+    /**
+     * @brief obtiene un jugador parcial de la base de datos 
+     * @param String id
+     * @return Jugador j
+     */
+    public Jugador getJugadorSQLByID (String id) throws SQLException{
+        String cons = "SELECT * FROM jugadores WHERE id_jugador = ?;";
+        PreparedStatement consulta = null;
+        ResultSet resultado = null;
+        Jugador j=null;
+
+
+        try{    
+            
+            conn.setAutoCommit(false);
+            
+
+            consulta = this.getConection().prepareStatement(cons);
+            
+            consulta.setInt(1, Integer.valueOf(id.substring(2, id.length())));
+            
+            resultado = consulta.executeQuery();
+            while(resultado.next()){
+
+                j = new Jugador ("J-"+resultado.getString(1).toString(), resultado.getString(2), resultado.getInt(3));
+
+            }
+        }
+        catch(SQLException sqle){
+            conn.rollback();
+            throw sqle;
+            
+        }
+        finally{
+            if (consulta != null){
+                try{
+                   consulta.close();
+                    resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
+                }
+                catch(SQLException sqle2){
+                    throw sqle2;
+                }
+            }
+        }
+        return j;
+    }
     
     
 }

@@ -631,11 +631,40 @@ public class ControllerTest {
 
     /**
      * Preuba12
-     * 
+     * Se crea y elimina un jugador, el crear es partiendo de que ya funciona el crear, pero se hace esto ya que el 
+     * objetivo de este test es comprobar su correcta eliminacion y es mas simple eliminar uno sin dependencias, para nuestro actual objetivo
      */
     @Test
     public void testEliminarJugador() throws SQLException {
+        //Creamos un jugador para comprobar que se elimine correctamente, objetivo de esta prueba
+        int numJugadores = instance.getJugadores_sistema().size()-1;
+        Boolean condicion=false;
         
+        String nickName = "FER";
+        int nivel = 10;
+        
+        String iString = instance.getInventarios_sistema().get(0).getIdInventario()+ ", " + instance.getInventarios_sistema().get(1).getIdInventario();
+        String [] inventarios = iString.split(", ");
+        
+        instance.crearJugador(nickName, nivel, inventarios);
+        
+        
+        int tamanio = instance.getJugadores_sistema().size();
+        
+        String idNewJugadorPrueba = instance.getJugadores_sistema().get(instance.getJugadores_sistema().size()-1).getIdPlayer();
+
+        String IdEliminado = idNewJugadorPrueba;
+
+        instance.EliminarJugador(IdEliminado);
+        
+        if (instance.getJugadores_sistema().size()==tamanio-1){
+            condicion=true;
+        }
+        if (instance.getconn().getJugadorSQLByID(IdEliminado)!=null){
+            condicion=false;
+        }
+        
+        assertEquals(true, condicion);
     }
 
 
