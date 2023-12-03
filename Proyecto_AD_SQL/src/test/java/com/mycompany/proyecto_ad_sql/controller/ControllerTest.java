@@ -40,6 +40,7 @@ public class ControllerTest {
     
     private static String idPartidaCreadoPrueba7="";
     
+    private static Partida pIniPreModPrueba8;
    
     //////////
     
@@ -93,10 +94,21 @@ public class ControllerTest {
             instance.EliminarPartida(idPartidaCreadoPrueba7);
         }
         
+        //Eliminar cambios Prueba8
+        if (pIniPreModPrueba8!=null){
+            String [] idsJugadorPartida;
+            String SidsJugadorPartida="";
+            for (int i=0; i < iIniPreModPrueba5.getJugadores().size(); i++){
+                SidsJugadorPartida += iIniPreModPrueba5.getJugadores().get(i).getIdPlayer();
+                if (iIniPreModPrueba5.getJugadores().size()-1!=i){
+                    SidsJugadorPartida += ", ";
+                }
+            }
+            idsJugadorPartida = SidsJugadorPartida.split(", ");
+            instance.ModificarPartida(pIniPreModPrueba8.getIdPartida(), pIniPreModPrueba8.getNumEspectadores(), pIniPreModPrueba8.getServerPartida().getIdServer(), idsJugadorPartida);
+        }
         
-       
-        
-        
+
     }
     
     @BeforeEach
@@ -414,11 +426,52 @@ public class ControllerTest {
 
     /**
      * Preuba8
-     * 
+     * Test para modificar una partida, comprobando que se hallan realizado los cambios
+     * los cambios se restauraran en el after all
      */
     @Test
     public void testModificarPartida() throws SQLException {
+        Boolean condicion = true; 
         
+        Partida pIni = new Partida(instance.getPartidas_sistema().get(0).getIdPartida(), instance.getPartidas_sistema().get(0).getNumEspectadores(), instance.getPartidas_sistema().get(0).getServerPartida());
+        
+        Partida pMod = null;
+
+        int numSMod = 99;
+        String idSmod = instance.getServidores_sistema().get(3).getIdServer();
+        
+   
+        String pString = "";
+        
+        String [] jugadoresMod = pString.split(", ");
+        
+
+        instance.ModificarPartida(instance.getPartidas_sistema().get(0).getIdPartida(), numSMod, idSmod, jugadoresMod);
+
+        pMod = instance.getPartidas_sistema().get(0);
+        
+        if (pMod==null){
+            condicion=false;
+        }
+        else if (pMod.getNumEspectadores()!=numSMod){
+            condicion=false;
+        }
+        else if (!pMod.getServerPartida().getIdServer().equals(idSmod)){
+            condicion=false;
+        }
+        else{
+            int i=0;
+            for (Jugador j : pMod.getJugadores()){
+                
+                if (!j.getIdPlayer().equals(jugadoresMod[i])){
+                    condicion=false;
+                }
+                i++;
+            }
+        }
+        
+        pIniPreModPrueba8 = pIni;
+        assertEquals(true, condicion);
     }
 
     /**
