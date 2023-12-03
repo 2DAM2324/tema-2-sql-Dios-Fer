@@ -475,11 +475,43 @@ public class ControllerTest {
     }
 
     /**
-     * Preuba9
+     * Prueba9
+     * Se crea y elimina una partida, el crear es partiendo de que ya funciona el crear, pero se hace esto ya que el 
+     * objetivo de este test es comprobar su correcta eliminacion y es mas simple eliminar uno sin dependencias, para nuestro actual objetivo
      */
     @Test
     public void testEliminarPartida() throws SQLException {
+        int numPartidas = instance.getPartidas_sistema().size()-1;
+        Boolean condicion=false;
         
+        int numEspectadores = 100;
+        String idServer = instance.getServidores_sistema().get(4).getIdServer();
+        
+        String pString = instance.getJugadores_sistema().get(4).getIdPlayer();
+        
+        String [] jugadores = pString.split(", ");
+        
+        instance.crearPartida(numEspectadores, idServer, jugadores);
+        
+        
+        int tamanio = instance.getPartidas_sistema().size();
+        
+        String idNewPartidaPrueba = instance.getPartidas_sistema().get(instance.getPartidas_sistema().size()-1).getIdPartida();
+
+        String IdEliminado = idNewPartidaPrueba;
+
+        instance.EliminarPartida(IdEliminado);
+        
+        if (instance.getPartidas_sistema().size()==tamanio-1){
+            condicion=true;
+
+        }
+        if (instance.getconn().getPartidaSQLByID(IdEliminado)!=null){
+            condicion=false;
+
+        }
+        
+        assertEquals(true, condicion);
     }
 
 

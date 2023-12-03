@@ -1165,7 +1165,7 @@ public class Conexion {
             //Cargamos los jugadores de la partida
             
             for (Partida part : partidas_conexion){
-                cons = "SELECT id_jugador FROM jugadores WHERE id_partida==" + part.getIdPartida().substring(2, part.getIdPartida().length()) + ";";
+                cons = "SELECT id_jugador FROM jugadores WHERE id_partida=" + part.getIdPartida().substring(2, part.getIdPartida().length()) + ";";
                 
                 consulta = null;
                 resultado = null;
@@ -1343,9 +1343,9 @@ public class Conexion {
     }
     
     /**
-     * @brief obtiene un servidor de la base de datos 
+     * @brief obtiene un inventario de la base de datos 
      * @param String id
-     * @return Servidor s
+     * @return InventarioCompartido inv
      */
     public InventarioCompartido getInventarioSQLByID (String idS) throws SQLException{
         String cons = "SELECT * FROM inventarios WHERE id_inventario = ?;";
@@ -1387,6 +1387,58 @@ public class Conexion {
         }
 
         return inv;
+    }
+    
+    /**
+     * @brief obtiene una partida parcial de la base de datos 
+     * @param String id
+     * @return Partida p
+     */
+    public Partida getPartidaSQLByID (String id) throws SQLException{
+        String cons = "SELECT * FROM partidas WHERE id_partida=?;";
+        PreparedStatement consulta = null;
+        ResultSet resultado = null;
+        Partida p=null;
+
+        partidas_conexion.clear();
+        
+        try{         
+            conn.setAutoCommit(false);
+            
+                                
+            consulta = this.getConection().prepareStatement(cons);
+
+            consulta.setString(1, String.valueOf(id));
+            
+            resultado = consulta.executeQuery();
+            while(resultado.next()){
+
+                p = new Partida ("P-"+resultado.getString(1).toString(), resultado.getInt(2), getServidorById("S-" + resultado.getInt(3)));
+                
+                
+            }
+            
+            
+        }
+        catch(SQLException sqle){
+            conn.rollback();
+            throw sqle;
+        }
+        finally{
+            if (consulta != null){
+                try{
+                   consulta.close();
+                    resultado.close(); 
+                    conn.commit(); 
+                    conn.setAutoCommit(true);
+                }
+                catch(SQLException sqle2){
+                    throw sqle2;
+                }
+                
+            }
+        }
+        return p;
     }
     
     
