@@ -670,7 +670,7 @@ public class Conexion {
                 
                 
                 sentencia.setString(1, String.valueOf(slotsMaximos));
-                inv.setSlotsOcupados(slotsMaximos);
+                inv.setSlotsMaximos(slotsMaximos);
                 sentencia.setString(2, inv.getIdInventario().substring(2, inv.getIdInventario().length()));
                 sentencia.executeUpdate(); 
                 ///
@@ -1341,6 +1341,7 @@ public class Conexion {
         
         
     }
+    
 }
 
 

@@ -37,6 +37,8 @@ public class ControllerTest {
     
     private static String idInventarioCreadoPrueba4;
     
+    private static InventarioCompartido iIniPreModPrueba5;
+   
     //////////
     
     public ControllerTest()  throws SQLException {
@@ -68,6 +70,20 @@ public class ControllerTest {
         
         if (!idInventarioCreadoPrueba4.equals("")){
             instance.EliminarInventario(idInventarioCreadoPrueba4);
+        }
+        
+        //Eliminar cambios Prueba5
+        if (iIniPreModPrueba5!=null){
+            String [] idsJugadorInventarios;
+            String SidsJugadorInventarios="";
+            for (int i=0; i < iIniPreModPrueba5.getJugadores().size(); i++){
+                SidsJugadorInventarios += iIniPreModPrueba5.getJugadores().get(i).getIdPlayer();
+                if (iIniPreModPrueba5.getJugadores().size()-1!=i){
+                    SidsJugadorInventarios += ", ";
+                }
+            }
+            idsJugadorInventarios = SidsJugadorInventarios.split(", ");
+            instance.ModificarInventario(iIniPreModPrueba5.getIdInventario(), iIniPreModPrueba5.getSlotsMaximos(), iIniPreModPrueba5.getSlotsOcupados(), idsJugadorInventarios);
         }
         
         
@@ -163,7 +179,7 @@ public class ControllerTest {
     @Test
     public void testModificarServidor() throws SQLException{
         Boolean condicion = true; 
-        Servidor sIni = instance.getServidores_sistema().get(0);
+        Servidor sIni = new Servidor(instance.getServidores_sistema().get(0).getIdServer(), instance.getServidores_sistema().get(0).getRegion());
         Servidor sMod = null;
 
         String regionMod = "Granada";
@@ -180,8 +196,9 @@ public class ControllerTest {
             condicion=false;
         }
         
-        assertEquals(true, condicion);
         sIniPreModPrueba2 = sIni;
+        assertEquals(true, condicion);
+        
     }
         
     
@@ -257,12 +274,56 @@ public class ControllerTest {
         }
         
     }
-
+    
+    //TODO EL MODIFICAR HAY QUE HACER COPIA NO DESDE PUNTERO
+    
     /**
-     * Test of ModificarInventario method, of class Controller.
+     * Prueba 5
+     * Crea un inventario y le asigna unos jugadores, se comprobara su correcta creacion y actualizacion
+     * Se eliminaran los cambios en el after all
      */
     @Test
     public void testModificarInventario() throws SQLException {
+        Boolean condicion = true; 
+        InventarioCompartido iIni = new InventarioCompartido(instance.getInventarios_sistema().get(0).getIdInventario(), instance.getInventarios_sistema().get(0).getSlotsMaximos(), instance.getInventarios_sistema().get(0).getSlotsOcupados());
+        InventarioCompartido iMod = null;
+
+        int SOcpMod = 9;
+        int SMaxMod = 100;
+        
+        
+        String jString = instance.getJugadores_sistema().get(0).getIdPlayer() + ", " + instance.getJugadores_sistema().get(1).getIdPlayer();
+        String [] jugadoresMod = jString.split(", ");
+        
+        
+        String idIni = instance.getInventarios_sistema().get(0).getIdInventario();
+
+        instance.ModificarInventario(idIni, SMaxMod, SOcpMod, jugadoresMod);
+
+        iMod = instance.getInventarioById(idIni);
+        
+        if (iMod==null){
+            condicion=false;
+        }
+        else if (iMod.getSlotsMaximos()!=SMaxMod){
+            condicion=false;
+        }
+        else if (iMod.getSlotsOcupados()!=SOcpMod){
+            condicion=false;
+        }
+        else{
+            int i=0;
+            for (Jugador j : iMod.getJugadores()){
+                
+                if (!j.getIdPlayer().equals(jugadoresMod[i])){
+                    condicion=false;
+                }
+                i++;
+            }
+        }
+        
+        iIniPreModPrueba5 = iIni;
+        assertEquals(true, condicion);
         
     }
 
